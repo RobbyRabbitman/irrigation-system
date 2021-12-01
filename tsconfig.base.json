@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@irrigation/generated/client": ["libs/generated/client/index.ts"],
+      "@irrigation/irrigation-system": ["libs/irrigation-system/src/index.ts"],
+      "@irrigation/shared/model": ["libs/shared/model/src/index.ts"],
+      "@irrigation/shared/store": ["libs/shared/store/src/index.ts"],
+      "@irrigation/shared/util": ["libs/shared/util/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

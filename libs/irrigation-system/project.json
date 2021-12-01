@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "libs/irrigation-system",
+  "sourceRoot": "libs/irrigation-system/src",
+  "prefix": "irrigation",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["dist/libs/irrigation-system"],
+      "options": {
+        "project": "libs/irrigation-system/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/irrigation-system/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/irrigation-system/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/irrigation-system"],
+      "options": {
+        "jestConfig": "libs/irrigation-system/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/irrigation-system/src/**/*.ts",
+          "libs/irrigation-system/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
