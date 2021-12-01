@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@irrigation/shared/store';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
           ),
       },
     ]),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
