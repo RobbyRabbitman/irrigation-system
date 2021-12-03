@@ -23,7 +23,7 @@ export class User extends Identifyable {
   username!: string;
   @Prop({ required: true })
   password!: string;
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, isArray: true, type: IrrigationSystem })
   @IsArray()
   @IsOptional()
   @Prop({

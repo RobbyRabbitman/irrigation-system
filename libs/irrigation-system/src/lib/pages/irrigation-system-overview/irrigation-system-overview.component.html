@@ -1,1 +1,5 @@
-<p>irrigation-system-overview works!</p>
+<irrigation-irrigation-system-card
+  *ngFor="let irrigationSystem of (store.user$ | async)?.irrigationSystems"
+  [irrigationSystem]="irrigationSystem"
+>
+</irrigation-irrigation-system-card>

@@ -9,9 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Pump } from './pump';
 
 export interface IrrigationSystem { 
     id: string;
     name: string;
-    pumps?: Array<string>;
+    pumps?: Array<Pump>;
 }

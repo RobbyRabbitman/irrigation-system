@@ -9,11 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { IrrigationSystem } from './irrigationSystem';
 
 export interface User { 
     id: string;
     username: string;
-    irrigationSystems?: Array<string>;
+    irrigationSystems?: Array<IrrigationSystem>;
     admin?: boolean;
     jwt?: string;
 }
