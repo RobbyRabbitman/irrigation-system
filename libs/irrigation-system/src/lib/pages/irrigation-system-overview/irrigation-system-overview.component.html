@@ -2,4 +2,12 @@
   *ngFor="let irrigationSystem of (store.user$ | async)?.irrigationSystems"
   [irrigationSystem]="irrigationSystem"
 >
+  <button
+    mat-raised-button
+    color="primary"
+    slot="action"
+    (click)="details(irrigationSystem)"
+  >
+    Details
+  </button>
 </irrigation-irrigation-system-card>

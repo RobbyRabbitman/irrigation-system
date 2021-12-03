@@ -9,13 +9,14 @@ import { IrrigationSystemCardComponent } from './components/irrigation-system-ca
 import { IrrigationSystemComponent } from './pages/irrigation-system/irrigation-system.component';
 import { IrrigationSystemRoutingModule } from './routes/irrigation-system-routing.module';
 import { IrrigationTimelineComponent } from './components/irrigation-timeline/irrigation-timeline.component';
-
+import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   imports: [
     CommonModule,
     IrrigationSystemRoutingModule,
     MatCardModule,
     GoogleChartsModule,
+    MatButtonModule,
   ],
   declarations: [
     IrrigationSystemOverviewComponent,
