@@ -8,6 +8,6 @@
     <p>{{ irrigationSystem.pumps?.length }} Pumpen</p>
   </mat-card-content>
   <mat-card-actions>
-    <ng-content select="[slot=action]"></ng-content>
+    <ng-content [select]="ACTIONS_SLOT"></ng-content>
   </mat-card-actions>
 </mat-card>

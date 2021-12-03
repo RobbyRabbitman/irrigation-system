@@ -7,6 +7,7 @@ import { IrrigationSystem } from '@irrigation/generated/client';
   styleUrls: ['./irrigation-system-card.component.scss'],
 })
 export class IrrigationSystemCardComponent {
+  public readonly ACTIONS_SLOT = '[slot=action]';
   @Input()
   public irrigationSystem?: IrrigationSystem;
 }
