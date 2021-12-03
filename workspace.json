@@ -6,6 +6,7 @@
     "shared-model": "libs/shared/model",
     "shared-store": "libs/shared/store",
     "shared-util": "libs/shared/util",
+    "shell": "libs/shell",
     "web": "apps/web",
     "web-e2e": "apps/web-e2e"
   }
