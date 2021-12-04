@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShellModule } from '@irrigation/shell';
 import { MatNativeDateModule } from '@angular/material/core';
 
+export const LOCALE = 'de-DE';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,7 +30,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     ]),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: LOCALE }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
