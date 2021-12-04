@@ -1,5 +1,15 @@
 <ng-container *ngIf="irrigationSystem$ | async as irrigationSystem">
   <h1>{{ irrigationSystem.name }}</h1>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="_range" [rangePicker]="picker">
+      <input matStartDate [formControlName]="_start" placeholder="Start date" />
+      <input matEndDate [formControlName]="_end" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
   <irrigation-irrigation-timeline
     *ngIf="timelineData$ | async as timelineData"
     [data]="timelineData"

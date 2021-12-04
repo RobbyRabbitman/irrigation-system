@@ -8,12 +8,14 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShellModule } from '@irrigation/shell';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     ShellModule,
+    MatNativeDateModule,
     HttpClientModule,
     StoreModule.forRoot(environment.api),
     RouterModule.forRoot([

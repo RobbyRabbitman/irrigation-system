@@ -10,6 +10,9 @@ import { IrrigationSystemComponent } from './pages/irrigation-system/irrigation-
 import { IrrigationSystemRoutingModule } from './routes/irrigation-system-routing.module';
 import { IrrigationTimelineComponent } from './components/irrigation-timeline/irrigation-timeline.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +20,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     GoogleChartsModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     IrrigationSystemOverviewComponent,
