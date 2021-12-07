@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingService, IrrigationSystem } from '@irrigation/generated/client';
+import {
+  BookingService,
+  IrrigationSystem,
+  Pump,
+} from '@irrigation/generated/client';
 import { StoreService } from '@irrigation/shared/store';
 import {
   combineLatest,
@@ -8,14 +12,23 @@ import {
   forkJoin,
   map,
   Observable,
+  of,
   pluck,
+  shareReplay,
+  startWith,
   switchMap,
+  take,
   tap,
 } from 'rxjs';
-import { isNonNull, isNullish } from '@irrigation/shared/util';
+import {
+  addToDate,
+  isNonNull,
+  isNullish,
+  throwExpression,
+} from '@irrigation/shared/util';
 import { ROUTE_IRRIGATION_SYSTEM_OVERVIEW } from '../../routes/routes';
-import { PumpWithBookings } from '../../components/irrigation-timeline/irrigation-timeline.component';
-import { FormGroup, FormControl } from '@angular/forms';
+import { TimelineData } from '../../components/irrigation-timeline/irrigation-timeline.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'irrigation-irrigation-system',
@@ -26,13 +39,50 @@ export class IrrigationSystemComponent implements OnInit {
   public static readonly QUERY_PARAM_ID = 'id';
 
   public irrigationSystem$!: Observable<IrrigationSystem>;
-  public timelineData$!: Observable<PumpWithBookings[]>;
+  public timelineData$!: Observable<TimelineData>;
+  private _now = new Date();
+  private _range_from_control_startValue = new Date(
+    this._now.getFullYear(),
+    this._now.getMonth(),
+    this._now.getDate()
+  );
+  private _range_to_control_startValue = addToDate(
+    this._range_from_control_startValue,
+    0,
+    0,
+    3
+  );
+  public _hours = [...Array(24).keys()];
 
-  public readonly _start = 'start';
-  public readonly _end = 'end';
+  public readonly _range_from_control = 'range_start';
+  public readonly _range_to_control = 'range_end';
   public readonly _range = new FormGroup({
-    [this._start]: new FormControl(),
-    [this._end]: new FormControl(),
+    [this._range_from_control]: new FormControl(
+      this._range_from_control_startValue
+    ),
+    [this._range_to_control]: new FormControl(
+      this._range_to_control_startValue
+    ),
+  });
+
+  public readonly _booking_from_control = 'booking_from_date';
+  public readonly _booking_from_time_control = 'booking_from_time';
+  public readonly _booking_to_control = 'booking_to_date';
+  public readonly _booking_to_time_control = 'booking_to_time';
+  public readonly _booking = new FormGroup({
+    [this._booking_from_control]: new FormControl(
+      this._range_from_control_startValue,
+      Validators.required
+    ),
+    [this._booking_from_time_control]: new FormControl(
+      null,
+      Validators.required
+    ),
+    [this._booking_to_control]: new FormControl(
+      this._range_from_control_startValue,
+      Validators.required
+    ),
+    [this._booking_to_time_control]: new FormControl(null, Validators.required),
   });
 
   constructor(
@@ -43,6 +93,7 @@ export class IrrigationSystemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._booking.valueChanges.subscribe(console.log);
     this.irrigationSystem$ = combineLatest([
       this.route.queryParams.pipe(
         pluck(IrrigationSystemComponent.QUERY_PARAM_ID)
@@ -61,9 +112,16 @@ export class IrrigationSystemComponent implements OnInit {
       }),
       filter(isNonNull)
     );
+
     this.timelineData$ = this._range.valueChanges.pipe(
+      startWith({
+        [this._range_from_control]: this._range_from_control_startValue,
+        [this._range_to_control]: this._range_to_control_startValue,
+      }),
       filter(
-        (value) => isNonNull(value[this._start]) && isNonNull(value[this._end])
+        (value) =>
+          isNonNull(value[this._range_from_control]) &&
+          isNonNull(value[this._range_to_control])
       ),
       switchMap((value) =>
         this.irrigationSystem$.pipe(
@@ -75,15 +133,77 @@ export class IrrigationSystemComponent implements OnInit {
                 this.bookingService
                   .inPeriod(
                     pump.id,
-                    (value[this._start] as Date).getTime(),
-                    (value[this._end] as Date).getTime()
+                    (value[this._range_from_control] as Date).getTime(),
+                    addToDate(value[this._range_to_control], 0, 0, 1).getTime()
                   )
                   .pipe(map((bookings) => ({ ...pump, bookings })))
               )
             )
+          ),
+          map((pumps) => ({
+            from: value[this._range_from_control],
+            to: addToDate(value[this._range_to_control], 0, 0, 1),
+            pumps,
+          }))
+        )
+      ),
+      tap(console.log),
+      shareReplay(1)
+    );
+  }
+
+  public _addBooking(): void {
+    if (this._booking.valid)
+      combineLatest([
+        this.store.user$.pipe(filter(isNonNull)),
+        this.timelineData$,
+        of(this._booking.value),
+      ])
+        .pipe(
+          take(1),
+          map(
+            ([user, timelineData, bookingFormValue]) =>
+              [
+                user,
+                timelineData,
+                addToDate(
+                  new Date(bookingFormValue[this._booking_from_control]),
+                  0,
+                  0,
+                  0,
+                  bookingFormValue[this._booking_from_time_control]
+                ).getTime(),
+                addToDate(
+                  new Date(bookingFormValue[this._booking_to_control]),
+                  0,
+                  0,
+                  0,
+                  bookingFormValue[this._booking_to_time_control]
+                ).getTime(),
+              ] as const
+          ),
+          switchMap(([user, timelineData, from, to]) =>
+            this.bookingService.createBooking({
+              from,
+              to,
+              by: user.id,
+              pump: this._getBestPump(from, to, timelineData).id,
+            })
           )
         )
-      )
+        .subscribe();
+  }
+
+  private _getBestPump(
+    _from: number,
+    _to: number,
+    timelineData: TimelineData
+  ): Pump {
+    return (
+      timelineData.pumps.find(
+        (pump) =>
+          !pump.bookings.some(({ from, to }) => _to > from && _from < to)
+      ) ?? throwExpression('No free slots')
     );
   }
 }

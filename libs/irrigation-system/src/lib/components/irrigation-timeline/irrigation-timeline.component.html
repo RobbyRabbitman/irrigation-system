@@ -1,6 +1,8 @@
 <google-chart
-  *ngIf="_data"
+  *ngIf="_data && _options"
   [type]="_CHART_TYPE"
   [data]="_data"
   [columns]="_columns"
-></google-chart>
+  [options]="_options"
+>
+</google-chart>
