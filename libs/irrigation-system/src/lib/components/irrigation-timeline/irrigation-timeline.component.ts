@@ -45,7 +45,7 @@ export class IrrigationTimelineComponent {
               ...rows,
               [
                 pump.name,
-                '',
+                booking.by.username,
                 null,
                 new Date(booking.from),
                 new Date(booking.to),
