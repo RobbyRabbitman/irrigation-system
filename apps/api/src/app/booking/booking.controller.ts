@@ -44,12 +44,8 @@ export class BookingController {
     return this.bookingService.inPeriod(dto.pump, dto.from, dto.to).pipe(
       switchMap((bookings) => {
         if (
-          bookings.some(
-            (b) =>
-              (b.from > dto.from && b.to < dto.to) ||
-              (b.from <= dto.from && b.to > dto.from) ||
-              (b.from < dto.to && b.to <= dto.to)
-          )
+          dto.from >= dto.to ||
+          bookings.some(({ from, to }) => dto.to > from && dto.from < to)
         )
           throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         return this.bookingService.create(dto);
