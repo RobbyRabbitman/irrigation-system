@@ -49,7 +49,7 @@ export class IrrigationSystemComponent implements OnInit {
     this._range_from_control_startValue,
     0,
     0,
-    3
+    1
   );
   public _hours = [...Array(24).keys()];
 
