@@ -189,18 +189,7 @@ export class IrrigationSystemComponent implements OnInit {
           )
         )
         .subscribe({
-          next: (booking) =>
-            this._range.reset(
-              {
-                [this._range_from_control]: new Date(
-                  booking.from - 1000 * 60 * 60 * 12
-                ),
-                [this._range_to_control]: new Date(
-                  booking.from + 1000 * 60 * 60 * 12
-                ),
-              },
-              { emitEvent: true }
-            ),
+          next: () => this._range.reset(this._range.value, { emitEvent: true }),
         });
   }
 
