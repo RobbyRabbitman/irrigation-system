@@ -18,7 +18,6 @@ import {
   startWith,
   switchMap,
   take,
-  tap,
 } from 'rxjs';
 import {
   addToDate,
@@ -93,7 +92,6 @@ export class IrrigationSystemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._booking.valueChanges.subscribe(console.log);
     this.irrigationSystem$ = combineLatest([
       this.route.queryParams.pipe(
         pluck(IrrigationSystemComponent.QUERY_PARAM_ID)
@@ -147,7 +145,6 @@ export class IrrigationSystemComponent implements OnInit {
           }))
         )
       ),
-      tap(console.log),
       shareReplay(1)
     );
   }
@@ -191,7 +188,20 @@ export class IrrigationSystemComponent implements OnInit {
             })
           )
         )
-        .subscribe();
+        .subscribe({
+          next: (booking) =>
+            this._range.reset(
+              {
+                [this._range_from_control]: new Date(
+                  booking.from - 1000 * 60 * 60 * 12
+                ),
+                [this._range_to_control]: new Date(
+                  booking.from + 1000 * 60 * 60 * 12
+                ),
+              },
+              { emitEvent: true }
+            ),
+        });
   }
 
   private _getBestPump(
