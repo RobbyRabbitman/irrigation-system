@@ -16,11 +16,13 @@ export class BookingService {
 
   public create(dto: CreateBookingDTO): Observable<Booking> {
     return rxjsFrom(
-      this.model.create({
-        ...dto,
-        by: new Types.ObjectId(dto.by),
-        pump: new Types.ObjectId(dto.pump),
-      })
+      this.model
+        .create({
+          ...dto,
+          by: new Types.ObjectId(dto.by),
+          pump: new Types.ObjectId(dto.pump),
+        })
+        .then((d) => d.populate(['by', 'pump']))
     );
   }
 
