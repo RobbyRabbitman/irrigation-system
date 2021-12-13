@@ -24,7 +24,12 @@
     (selected)="selectedBooking = $event"
   >
   </irrigation-irrigation-timeline>
-  <p>{{ selectedBooking?.id }}</p>
+  <ng-container *ngIf="selectedBooking">
+    <p>{{ selectedBooking.id }}</p>
+    <button mat-icon-button (click)="_deleteBooking()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-container>
   <!-- add booking form -->
   <form [formGroup]="_booking" (ngSubmit)="_addBooking()">
     <!-- from -->

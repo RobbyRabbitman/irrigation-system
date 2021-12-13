@@ -10,6 +10,7 @@ import { StoreService } from '@irrigation/shared/store';
 import {
   combineLatest,
   filter,
+  finalize,
   forkJoin,
   map,
   Observable,
@@ -25,6 +26,7 @@ import {
   isNonNull,
   isNullish,
   throwExpression,
+  throwIfNullish,
 } from '@irrigation/shared/util';
 import { ROUTE_IRRIGATION_SYSTEM_OVERVIEW } from '../../routes/routes';
 import { TimelineData } from '../../components/irrigation-timeline/irrigation-timeline.component';
@@ -151,7 +153,12 @@ export class IrrigationSystemComponent implements OnInit {
     );
   }
 
-  public _deleteBooking(): void {}
+  public _deleteBooking(): void {
+    this.bookingService
+      .deleteBooking(throwIfNullish(this.selectedBooking?.id))
+      .pipe(finalize(() => this._refreshTimelineData()))
+      .subscribe({ next: () => (this.selectedBooking = undefined) });
+  }
 
   public _addBooking(): void {
     if (this._booking.valid)
@@ -193,8 +200,12 @@ export class IrrigationSystemComponent implements OnInit {
           )
         )
         .subscribe({
-          next: () => this._range.reset(this._range.value, { emitEvent: true }),
+          next: () => this._refreshTimelineData(),
         });
+  }
+
+  private _refreshTimelineData(): void {
+    this._range.reset(this._range.value, { emitEvent: true });
   }
 
   private _getBestPump(

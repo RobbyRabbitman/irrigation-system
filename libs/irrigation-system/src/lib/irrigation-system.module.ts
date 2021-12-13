@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import {
   NgxMatDatetimePickerModule,
   NgxMatNativeDateModule,
@@ -23,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   imports: [
     CommonModule,
+    MatIconModule,
     IrrigationSystemRoutingModule,
     MatCardModule,
     GoogleChartsModule,
