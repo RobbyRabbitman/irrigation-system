@@ -9,7 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShellModule } from '@irrigation/shell';
 import { MatNativeDateModule } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeDE from '@angular/common/locales/de';
 
+registerLocaleData(localeDE);
 export const LOCALE = 'de-DE';
 @NgModule({
   declarations: [AppComponent],
