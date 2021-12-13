@@ -1,8 +1,20 @@
 import { formatDate } from '@angular/common';
-import { Component, Inject, Input, LOCALE_ID } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  Output,
+} from '@angular/core';
 import { Booking, Pump } from '@irrigation/generated/client';
-import { isNonNull } from '@irrigation/shared/util';
-import { ChartType, Row, Column } from 'angular-google-charts';
+import { isNonNull, throwIfNullish } from '@irrigation/shared/util';
+import {
+  ChartType,
+  Row,
+  Column,
+  ChartSelectionChangedEvent,
+} from 'angular-google-charts';
 
 export type PumpWithBookings = Pump & { bookings: Booking[] };
 export interface TimelineData {
@@ -31,9 +43,15 @@ export class IrrigationTimelineComponent {
 
   constructor(@Inject(LOCALE_ID) private readonly locale: string) {}
 
+  @Output()
+  selected = new EventEmitter<Booking>();
+
+  _bookings!: Map<number, Booking>;
+
   @Input()
   set data({ pumps, from, to }: TimelineData) {
     if (isNonNull(pumps)) {
+      let index = 0;
       this._options = {
         hAxis: {
           format: 'HH:mm',
@@ -42,30 +60,30 @@ export class IrrigationTimelineComponent {
         },
         tooltip: { isHtml: true },
       };
-      this._data = pumps.reduce(
-        (rows, pump) => [
-          ...rows,
-          ...pump.bookings.reduce(
-            (rows, booking) => [
-              ...rows,
-              [
-                pump.name,
-                booking.by.username,
-                null,
-                this._createTooltip(booking),
-                new Date(booking.from),
-                new Date(booking.to),
-              ],
-            ],
-            new Array<any>(
-              [pump.name, '', 'opacity:0;', '', from, from],
-              [pump.name, '', 'opacity:0;', '', to, to]
-            )
-          ),
-        ],
-        new Array<any>()
-      );
+      this._bookings = new Map();
+      this._data = pumps.reduce((rows, pump) => {
+        index += 2;
+        rows.push(
+          ...pump.bookings.reduce((rows, booking) => {
+            this._bookings.set(index++, booking);
+            rows.push([
+              pump.name,
+              booking.by.username,
+              null,
+              this._createTooltip(booking),
+              new Date(booking.from),
+              new Date(booking.to),
+            ]);
+            return rows;
+          }, new Array<any>([pump.name, '', 'opacity:0;', '', from, from], [pump.name, '', 'opacity:0;', '', to, to]))
+        );
+        return rows;
+      }, new Array<any>());
     }
+  }
+
+  public _onSelect(event: ChartSelectionChangedEvent): void {
+    console.log(this._bookings.get(throwIfNullish(event.selection[0].row)));
   }
 
   private _createTooltip(booking: Booking) {

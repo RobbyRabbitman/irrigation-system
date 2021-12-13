@@ -21,8 +21,10 @@
   <irrigation-irrigation-timeline
     *ngIf="timelineData$ | async as timelineData"
     [data]="timelineData"
+    (selected)="selectedBooking = $event"
   >
   </irrigation-irrigation-timeline>
+  <p>{{ selectedBooking?.id }}</p>
   <!-- add booking form -->
   <form [formGroup]="_booking" (ngSubmit)="_addBooking()">
     <!-- from -->

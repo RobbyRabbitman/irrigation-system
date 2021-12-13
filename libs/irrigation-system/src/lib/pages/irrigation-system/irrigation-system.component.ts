@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  Booking,
   BookingService,
   IrrigationSystem,
   Pump,
@@ -37,6 +38,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class IrrigationSystemComponent implements OnInit {
   public static readonly QUERY_PARAM_ID = 'id';
 
+  public selectedBooking?: Booking;
   public irrigationSystem$!: Observable<IrrigationSystem>;
   public timelineData$!: Observable<TimelineData>;
   private _now = new Date();
@@ -148,6 +150,8 @@ export class IrrigationSystemComponent implements OnInit {
       shareReplay(1)
     );
   }
+
+  public _deleteBooking(): void {}
 
   public _addBooking(): void {
     if (this._booking.valid)
