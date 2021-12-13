@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, Inject, Input, LOCALE_ID } from '@angular/core';
 import { Booking, Pump } from '@irrigation/generated/client';
 import { isNonNull } from '@irrigation/shared/util';
 import { ChartType, Row, Column } from 'angular-google-charts';
@@ -22,10 +23,13 @@ export class IrrigationTimelineComponent {
     { type: 'string', id: 'Name' },
     { type: 'string', id: 'label' },
     { type: 'string', role: 'style' },
+    { type: 'string', role: 'tooltip' },
     { type: 'date', id: 'Start' },
     { type: 'date', id: 'End' },
   ];
   public _options?: object;
+
+  constructor(@Inject(LOCALE_ID) private readonly locale: string) {}
 
   @Input()
   set data({ pumps, from, to }: TimelineData) {
@@ -36,6 +40,7 @@ export class IrrigationTimelineComponent {
           minValue: from,
           maxValue: to,
         },
+        tooltip: { isHtml: true },
       };
       this._data = pumps.reduce(
         (rows, pump) => [
@@ -47,18 +52,32 @@ export class IrrigationTimelineComponent {
                 pump.name,
                 booking.by.username,
                 null,
+                this._createTooltip(booking),
                 new Date(booking.from),
                 new Date(booking.to),
               ],
             ],
             new Array<any>(
-              [pump.name, '', 'opacity:0;', from, from],
-              [pump.name, '', 'opacity:0;', to, to]
+              [pump.name, '', 'opacity:0;', '', from, from],
+              [pump.name, '', 'opacity:0;', '', to, to]
             )
           ),
         ],
         new Array<any>()
       );
     }
+  }
+
+  private _createTooltip(booking: Booking) {
+    return `<div style="padding:5px 5px 5px 5px;font-size: 1rem;">
+            <h3><strong>${booking.by.username}</strong></h3>
+            <p>
+            ${formatDate(booking.from, 'HH:mm', this.locale)} - 
+            ${formatDate(booking.to, 'HH:mm', this.locale)}
+            </p>
+            <p>
+            Dauer: ${(booking.to - booking.from) / 1000 / 60 / 60}h
+            </p>
+            </div`;
   }
 }
