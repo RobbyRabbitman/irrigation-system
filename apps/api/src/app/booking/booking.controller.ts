@@ -1,10 +1,12 @@
-import { Booking, CreateBookingDTO } from '@irrigation/shared/model';
+import { Booking, CreateBookingDTO, OBJECT_ID } from '@irrigation/shared/model';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Query,
   Req,
@@ -13,10 +15,11 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
@@ -51,6 +54,17 @@ export class BookingController {
         return this.bookingService.create(dto);
       })
     );
+  }
+
+  @ApiNoContentResponse()
+  @Delete(`:${OBJECT_ID}`)
+  public deleteBooking(
+    @Req() req: PassportRequest,
+    @Param(OBJECT_ID) id: string
+  ): Observable<void> {
+    if (!req.user.admin && req.user.id !== id)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    else return this.bookingService.deleteById(id);
   }
 
   @ApiOkResponse({ isArray: true, type: Booking })

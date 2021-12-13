@@ -6,7 +6,7 @@ import {
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { from as rxjsFrom, Observable } from 'rxjs';
+import { from as rxjsFrom, mapTo, Observable } from 'rxjs';
 
 @Injectable()
 export class BookingService {
@@ -23,6 +23,12 @@ export class BookingService {
           pump: new Types.ObjectId(dto.pump),
         })
         .then((d) => d.populate(['by', 'pump']))
+    );
+  }
+
+  public deleteById(id: string): Observable<void> {
+    return rxjsFrom(this.model.deleteOne({ _id: id }).exec()).pipe(
+      mapTo(void 0)
     );
   }
 
