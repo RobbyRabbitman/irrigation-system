@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "auth": "libs/auth",
     "irrigation-system": "libs/irrigation-system",
     "shared-model": "libs/shared/model",
     "shared-store": "libs/shared/store",
