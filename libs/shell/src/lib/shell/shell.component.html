@@ -2,6 +2,18 @@
   <mat-toolbar class="header" color="primary">
     <button routerLink="" mat-button>Ber App</button>
     <span class="flex-spacer"></span>
+    <ng-container *ngIf="store.user$ | async as user">
+      <ng-container *ngIf="user === null">
+        <button mat-icon-button><mat-icon>login</mat-icon></button>
+      </ng-container>
+      <ng-container *ngIf="!!user">
+        <button *ngIf="user.admin" mat-icon-button>
+          <mat-icon>admin_panel_settings</mat-icon>
+        </button>
+        <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
+        <button mat-icon-button><mat-icon>logout</mat-icon></button>
+      </ng-container>
+    </ng-container>
   </mat-toolbar>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav-content class="sidenav-content">

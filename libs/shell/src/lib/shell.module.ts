@@ -5,12 +5,14 @@ import { ShellComponent } from './shell/shell.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatIconModule,
     MatButtonModule,
   ],
   exports: [ShellComponent],
