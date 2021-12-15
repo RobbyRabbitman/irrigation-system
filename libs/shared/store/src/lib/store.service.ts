@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   map,
@@ -7,20 +7,20 @@ import {
   of,
   shareReplay,
   switchMap,
-  switchMapTo
-} from "rxjs";
+  switchMapTo,
+} from 'rxjs';
 import {
   AuthService,
   Configuration,
   Login,
   User,
-  UserService
-} from "@irrigation/generated/client";
-import { throwIfNullish } from "@irrigation/shared/util";
-import { LocalStorageService } from "./local-storage.service";
+  UserService,
+} from '@irrigation/generated/client';
+import { throwIfNullish } from '@irrigation/shared/util';
+import { LocalStorageService } from './local-storage.service';
 @Injectable()
 export class StoreService {
-  private readonly LOCAL_STORAGE_JWT = "jwt";
+  private readonly LOCAL_STORAGE_JWT = 'jwt';
   private readonly _user$ = new BehaviorSubject<User | null | undefined>(
     undefined
   );
@@ -49,7 +49,11 @@ export class StoreService {
     return this.auth.login(login).pipe(map((user) => this._user$.next(user)));
   }
 
-  public dispatchSetJwt(jwt: string | undefined): Observable<void> {
+  public dispatchLogout(): Observable<void> {
+    return this.dispatchSetJwt();
+  }
+
+  public dispatchSetJwt(jwt?: string): Observable<void> {
     return of(
       (this.config.accessToken = this.localstorage.set(
         this.LOCAL_STORAGE_JWT,

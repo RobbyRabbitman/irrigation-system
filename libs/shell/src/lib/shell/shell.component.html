@@ -11,7 +11,9 @@
           <mat-icon>admin_panel_settings</mat-icon>
         </button>
         <button mat-icon-button><mat-icon>account_circle</mat-icon></button>
-        <button mat-icon-button><mat-icon>logout</mat-icon></button>
+        <button mat-icon-button (click)="_onLogout()">
+          <mat-icon>logout</mat-icon>
+        </button>
       </ng-container>
     </ng-container>
   </mat-toolbar>
