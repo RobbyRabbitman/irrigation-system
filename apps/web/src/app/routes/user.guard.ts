@@ -1,20 +1,20 @@
-import { Inject, Injectable } from "@angular/core";
+import { Inject, Injectable } from '@angular/core';
 import {
   ActivatedRoute,
   CanLoad,
   Route,
   Router,
-  UrlSegment
-} from "@angular/router";
+  UrlSegment,
+} from '@angular/router';
 import {
   LoginSuccessFulCallback,
-  LOGIN_SUCCESSFUL_CALLBACK_TOKEN
-} from "@irrigation/auth";
-import { StoreService } from "@irrigation/shared/store";
-import { BehaviorSubject, filter, map, Observable, tap } from "rxjs";
+  LOGIN_SUCCESSFUL_CALLBACK_TOKEN,
+} from '@irrigation/auth';
+import { StoreService } from '@irrigation/shared/store';
+import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class UserGuard implements CanLoad {
   public constructor(
@@ -36,9 +36,9 @@ export class UserGuard implements CanLoad {
       tap((canLoad) => {
         if (!canLoad) {
           this.loginsuccessfulCallBack$.next(() =>
-            this.router.navigate([segments.join("/")], { queryParams })
+            this.router.navigate([segments.join('/')], { queryParams })
           );
-          this.router.navigateByUrl("auth/login");
+          this.router.navigateByUrl('auth/login');
         }
       })
     );

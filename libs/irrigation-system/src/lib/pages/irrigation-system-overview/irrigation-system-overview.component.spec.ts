@@ -8,9 +8,8 @@ describe('IrrigationSystemOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IrrigationSystemOverviewComponent ]
-    })
-    .compileComponents();
+      declarations: [IrrigationSystemOverviewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
