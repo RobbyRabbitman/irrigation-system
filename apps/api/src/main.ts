@@ -36,7 +36,7 @@ async function bootstrap() {
     operationIdFactory: (_, method) => method,
   });
   SwaggerModule.setup('api', app, document);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe()); // https://stackoverflow.com/questions/65540629/how-to-make-custom-response-using-globalpipse-in-nestjs
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
