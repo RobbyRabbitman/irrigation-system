@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "libs/shared/error",
+  "sourceRoot": "libs/shared/error/src",
+  "prefix": "irrigation",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["dist/libs/shared/error"],
+      "options": {
+        "project": "libs/shared/error/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/shared/error/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/shared/error/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/error"],
+      "options": {
+        "jestConfig": "libs/shared/error/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/error/src/**/*.ts",
+          "libs/shared/error/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

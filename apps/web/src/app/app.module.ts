@@ -13,6 +13,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDE from '@angular/common/locales/de';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { UserGuard } from '@irrigation/auth';
+import { ErrorModule } from '@irrigation/shared/error';
 
 registerLocaleData(localeDE);
 export const LOCALE = 'de-DE';
@@ -23,6 +24,7 @@ export const LOCALE = 'de-DE';
     BrowserAnimationsModule,
     ShellModule,
     MatNativeDateModule,
+    ErrorModule,
     HttpClientModule,
     StoreModule.forRoot(environment.api),
     RouterModule.forRoot(
