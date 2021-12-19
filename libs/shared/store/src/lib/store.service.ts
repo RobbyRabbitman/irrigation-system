@@ -50,7 +50,7 @@ export class StoreService {
   }
 
   public dispatchLogout(): Observable<void> {
-    return this.dispatchSetJwt();
+    return of(this._user$.next(null));
   }
 
   public dispatchSetJwt(jwt?: string): Observable<void> {

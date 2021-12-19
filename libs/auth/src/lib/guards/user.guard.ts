@@ -1,9 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import {
-  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
   CanLoad,
   Route,
   Router,
+  RouterStateSnapshot,
   UrlSegment,
 } from '@angular/router';
 import {
@@ -16,7 +19,7 @@ import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class UserGuard implements CanLoad {
+export class UserGuard implements CanLoad, CanActivateChild, CanActivate {
   public constructor(
     private readonly store: StoreService,
     private readonly router: Router,
@@ -25,16 +28,36 @@ export class UserGuard implements CanLoad {
       LoginSuccessFulCallback | undefined
     >
   ) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    console.log('canActivate');
+    return this.handle(route.url);
+  }
 
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
+  public canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    console.log('canActivateChild');
+    return this.handle(childRoute.url);
+  }
+
+  public canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
+    console.log('canLoad');
+    return this.handle(segments);
+  }
+
+  private handle(segments: UrlSegment[]): Observable<boolean> {
     const queryParams =
       this.router.getCurrentNavigation()?.extractedUrl.queryParams;
 
     return this.store.user$.pipe(
       filter((user) => user !== undefined),
       map(Boolean),
-      tap((canLoad) => {
-        if (!canLoad) {
+      tap((user) => {
+        if (!user) {
           this.loginsuccessfulCallBack$.next(() =>
             this.router.navigate([segments.join('/')], { queryParams })
           );

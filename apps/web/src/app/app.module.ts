@@ -11,8 +11,8 @@ import { ShellModule } from '@irrigation/shell';
 import { MatNativeDateModule } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import localeDE from '@angular/common/locales/de';
-import { UserGuard } from './routes/user.guard';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { UserGuard } from '@irrigation/auth';
 
 registerLocaleData(localeDE);
 export const LOCALE = 'de-DE';
@@ -25,26 +25,30 @@ export const LOCALE = 'de-DE';
     MatNativeDateModule,
     HttpClientModule,
     StoreModule.forRoot(environment.api),
-    RouterModule.forRoot([
-      {
-        path: 'irrigation-systems',
-        loadChildren: () =>
-          import('@irrigation/irrigation-system').then(
-            (lib) => lib.IrrigationSystemModule
-          ),
-        canLoad: [UserGuard],
-      },
-      {
-        path: 'auth',
-        loadChildren: () =>
-          import('@irrigation/auth').then((lib) => lib.AuthModule),
-      },
-      {
-        path: '**',
-        redirectTo: 'irrigation-systems',
-        pathMatch: 'full',
-      },
-    ]),
+    RouterModule.forRoot(
+      [
+        {
+          path: 'irrigation-systems',
+          loadChildren: () =>
+            import('@irrigation/irrigation-system').then(
+              (lib) => lib.IrrigationSystemModule
+            ),
+          canLoad: [UserGuard],
+          canActivateChild: [UserGuard],
+        },
+        {
+          path: 'auth',
+          loadChildren: () =>
+            import('@irrigation/auth').then((lib) => lib.AuthModule),
+        },
+        {
+          path: '**',
+          redirectTo: 'irrigation-systems',
+          pathMatch: 'full',
+        },
+      ],
+      { onSameUrlNavigation: 'reload' }
+    ),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: LOCALE },
