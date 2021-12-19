@@ -32,7 +32,6 @@ export class UserGuard implements CanLoad, CanActivateChild, CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    console.log('canActivate');
     return this.handle(route.url);
   }
 
@@ -40,12 +39,10 @@ export class UserGuard implements CanLoad, CanActivateChild, CanActivate {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    console.log('canActivateChild');
     return this.handle(childRoute.url);
   }
 
   public canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
-    console.log('canLoad');
     return this.handle(segments);
   }
 
