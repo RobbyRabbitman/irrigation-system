@@ -18,6 +18,7 @@ import {
 } from '@irrigation/generated/client';
 import { throwIfNullish } from '@irrigation/shared/util';
 import { LocalStorageService } from './local-storage.service';
+import { CreateUserDTO } from '@irrigation/shared/model';
 @Injectable()
 export class StoreService {
   private readonly LOCAL_STORAGE_JWT = 'jwt';
@@ -26,7 +27,7 @@ export class StoreService {
   );
   public readonly user$ = this._user$.asObservable().pipe(shareReplay(1));
   constructor(
-    private readonly auth: AuthService,
+    private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly localstorage: LocalStorageService,
     public readonly config: Configuration
@@ -46,11 +47,19 @@ export class StoreService {
   }
 
   public dispatchLogin(login: Login): Observable<void> {
-    return this.auth.login(login).pipe(map((user) => this._user$.next(user)));
+    return this.authService
+      .login(login)
+      .pipe(map((user) => this._user$.next(user)));
   }
 
   public dispatchLogout(): Observable<void> {
     return of(this._user$.next(null));
+  }
+
+  public dispatchSignUp(dto: CreateUserDTO): Observable<void> {
+    return this.authService
+      .signUp(dto)
+      .pipe(map((user) => this._user$.next(user)));
   }
 
   public dispatchSetJwt(jwt?: string): Observable<void> {

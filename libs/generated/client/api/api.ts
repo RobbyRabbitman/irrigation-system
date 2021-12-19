@@ -8,10 +8,4 @@ export * from './pump.service';
 import { PumpService } from './pump.service';
 export * from './user.service';
 import { UserService } from './user.service';
-export const APIS = [
-  AuthService,
-  BookingService,
-  IrrigationSystemService,
-  PumpService,
-  UserService,
-];
+export const APIS = [AuthService, BookingService, IrrigationSystemService, PumpService, UserService];

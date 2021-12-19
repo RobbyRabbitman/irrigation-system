@@ -65,4 +65,26 @@ export class LoginComponent {
             loginsuccessfulCallBack?.(user) ?? this.router.navigateByUrl(''),
         });
   }
+
+  public _onSignUp() {
+    if (this.form.valid)
+      this.store
+        .dispatchSignUp({
+          username: this.control_username.value,
+          password: this.control_password.value,
+        })
+        .pipe(
+          switchMapTo(
+            combineLatest([
+              this.store.user$.pipe(filter(isNonNull)),
+              this.loginsuccessfulCallBack$,
+            ])
+          ),
+          take(1)
+        )
+        .subscribe({
+          next: ([user, loginsuccessfulCallBack]) =>
+            loginsuccessfulCallBack?.(user) ?? this.router.navigateByUrl(''),
+        });
+  }
 }

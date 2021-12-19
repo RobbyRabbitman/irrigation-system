@@ -1,6 +1,11 @@
-import { Login, User } from '@irrigation/shared/model';
-import { Controller, Post, UseGuards, Request } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDTO, Login, User } from '@irrigation/shared/model';
+import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Observable, switchMap } from 'rxjs';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from '../user/user.service';
@@ -27,5 +32,12 @@ export class AuthController {
           this.userService.update(req.user.id, { jwt: access_token })
         )
       );
+  }
+
+  @ApiCreatedResponse({ type: User })
+  @ApiBody({ type: CreateUserDTO })
+  @Post('sign-up')
+  public signUp(@Body() dto: CreateUserDTO): Observable<User> {
+    return this.userService.create(dto);
   }
 }
