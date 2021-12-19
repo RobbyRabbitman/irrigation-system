@@ -18,4 +18,8 @@ export class ShellComponent {
       .dispatchLogout()
       .subscribe({ next: () => this.router.navigateByUrl('') });
   }
+
+  public _onProfileClick(): void {
+    this.router.navigateByUrl('profile'); // TODO const
+  }
 }

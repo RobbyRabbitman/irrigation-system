@@ -4,6 +4,7 @@
     "api": "apps/api",
     "auth": "libs/auth",
     "irrigation-system": "libs/irrigation-system",
+    "profile": "libs/profile",
     "shared-error": "libs/shared/error",
     "shared-model": "libs/shared/model",
     "shared-store": "libs/shared/store",

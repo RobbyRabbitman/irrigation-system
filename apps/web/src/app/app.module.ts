@@ -44,6 +44,12 @@ export const LOCALE = 'de-DE';
             import('@irrigation/auth').then((lib) => lib.AuthModule),
         },
         {
+          path: 'profile',
+          loadChildren: () =>
+            import('@irrigation/profile').then((lib) => lib.ProfileModule),
+          canLoad: [UserGuard],
+        },
+        {
           path: '**',
           redirectTo: 'irrigation-systems',
           pathMatch: 'full',

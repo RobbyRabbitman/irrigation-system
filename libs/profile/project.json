@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "libs/profile",
+  "sourceRoot": "libs/profile/src",
+  "prefix": "irrigation",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["dist/libs/profile"],
+      "options": {
+        "project": "libs/profile/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/profile/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/profile/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/profile"],
+      "options": {
+        "jestConfig": "libs/profile/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/profile/src/**/*.ts",
+          "libs/profile/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
