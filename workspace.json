@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "admin": "libs/admin",
     "api": "apps/api",
     "auth": "libs/auth",
     "irrigation-system": "libs/irrigation-system",

@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@irrigation/admin": ["libs/admin/src/index.ts"],
       "@irrigation/auth": ["libs/auth/src/index.ts"],
       "@irrigation/generated/client": ["libs/generated/client/index.ts"],
       "@irrigation/irrigation-system": ["libs/irrigation-system/src/index.ts"],

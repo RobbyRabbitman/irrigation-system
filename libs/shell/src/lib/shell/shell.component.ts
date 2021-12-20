@@ -22,4 +22,7 @@ export class ShellComponent {
   public _onProfileClick(): void {
     this.router.navigateByUrl('profile'); // TODO const
   }
+  public _onAdminClick(): void {
+    this.router.navigateByUrl('admin'); // TODO const
+  }
 }

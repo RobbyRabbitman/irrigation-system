@@ -12,7 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import localeDE from '@angular/common/locales/de';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { UserGuard } from '@irrigation/auth';
+import { AdminGuard, UserGuard } from '@irrigation/auth';
 import { ErrorModule } from '@irrigation/shared/error';
 
 registerLocaleData(localeDE);
@@ -48,6 +48,12 @@ export const LOCALE = 'de-DE';
           loadChildren: () =>
             import('@irrigation/profile').then((lib) => lib.ProfileModule),
           canLoad: [UserGuard],
+        },
+        {
+          path: 'admin',
+          loadChildren: () =>
+            import('@irrigation/admin').then((lib) => lib.AdminModule),
+          canLoad: [UserGuard, AdminGuard],
         },
         {
           path: '**',

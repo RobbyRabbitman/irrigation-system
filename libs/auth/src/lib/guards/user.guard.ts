@@ -9,12 +9,13 @@ import {
   RouterStateSnapshot,
   UrlSegment,
 } from '@angular/router';
+
+import { StoreService } from '@irrigation/shared/store';
+import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
 import {
   LoginSuccessFulCallback,
   LOGIN_SUCCESSFUL_CALLBACK_TOKEN,
-} from '@irrigation/auth';
-import { StoreService } from '@irrigation/shared/store';
-import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
+} from '../pages/login/login.component';
 
 @Injectable({
   providedIn: 'root',

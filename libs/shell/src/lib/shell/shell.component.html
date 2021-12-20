@@ -7,7 +7,7 @@
         <button mat-icon-button><mat-icon>login</mat-icon></button>
       </ng-container>
       <ng-container *ngIf="!!user">
-        <button *ngIf="user.admin" mat-icon-button>
+        <button *ngIf="user.admin" mat-icon-button (click)="_onAdminClick()">
           <mat-icon>admin_panel_settings</mat-icon>
         </button>
         <button mat-icon-button (click)="_onProfileClick()">
