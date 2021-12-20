@@ -52,7 +52,7 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User, isArray: true })
-  @Get()
+  @Get('all')
   public getAll(@Req() req: PassportRequest): Observable<User[]> {
     if (!req.user.admin)
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
