@@ -14,6 +14,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { IrrigationSystemService } from './irrigation-system.service';
@@ -37,6 +38,15 @@ export class IrrigationSystemController {
       //TODO
       throw new UnauthorizedException();
     return this.irrigationSystem.findOne(id);
+  }
+
+  @ApiOkResponse({ type: IrrigationSystem, isArray: true })
+  @Get(`all`)
+  public getAll(
+    @Request() req: PassportRequest
+  ): Observable<IrrigationSystem[]> {
+    if (!req.user.admin) throw new UnauthorizedException();
+    return this.irrigationSystem.findAll();
   }
 
   @ApiOkResponse({ type: IrrigationSystem })

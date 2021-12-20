@@ -17,13 +17,17 @@ export class IrrigationSystemService {
     private readonly model: Model<IrrigationSystemDocument>
   ) {}
 
-  public findOne(id: string): Observable<IrrigationSystemDocument> {
+  public findOne(id: string): Observable<IrrigationSystem> {
     return from(this.model.findById(id));
+  }
+
+  public findAll(): Observable<IrrigationSystem[]> {
+    return from(this.model.find().exec());
   }
 
   public createOne(
     value: CreateIrrigationSystemDTO
-  ): Observable<IrrigationSystemDocument> {
+  ): Observable<IrrigationSystem> {
     return from(this.model.create(value));
   }
 
