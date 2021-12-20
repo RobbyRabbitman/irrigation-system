@@ -51,6 +51,14 @@ export class UserController {
     return this.user.findOneById(req.user.id);
   }
 
+  @ApiOkResponse({ type: User, isArray: true })
+  @Get()
+  public getAll(@Req() req: PassportRequest): Observable<User[]> {
+    if (!req.user.admin)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    return this.user.findAll();
+  }
+
   @ApiCreatedResponse({ type: User })
   @Post()
   public create(@Body() dto: CreateUserDTO): Observable<User> {

@@ -35,6 +35,22 @@ export class UserService {
     );
   }
 
+  public findAll(): Observable<User[]> {
+    return from(
+      this.model
+        .find()
+        .populate('irrigationSystems')
+        .populate({
+          path: 'irrigationSystems',
+          populate: {
+            path: 'pumps',
+            model: Pump.name,
+          },
+        })
+        .exec()
+    );
+  }
+
   public create(dto: CreateUserDTO): Observable<User> {
     return from(this.model.create(dto));
   }
