@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpException,
   HttpStatus,
@@ -43,7 +44,7 @@ export class BookingController {
       ) ||
       req.user.id !== dto.by
     )
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new ForbiddenException();
     return this.bookingService.inPeriod(dto.pump, dto.from, dto.to).pipe(
       switchMap((bookings) => {
         if (
@@ -62,8 +63,7 @@ export class BookingController {
     @Req() req: PassportRequest,
     @Param(OBJECT_ID) id: string
   ): Observable<void> {
-    if (!req.user.admin && req.user.id !== id)
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     else return this.bookingService.deleteById(id);
   }
 
@@ -81,7 +81,7 @@ export class BookingController {
       ) &&
       !req.user.admin
     )
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new ForbiddenException();
     return this.bookingService.inPeriod(pump, from, to);
   }
 }

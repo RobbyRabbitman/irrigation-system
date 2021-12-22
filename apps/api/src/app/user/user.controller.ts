@@ -13,8 +13,7 @@ import {
   Body,
   Param,
   Post,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -40,8 +39,7 @@ export class UserController {
     @Req() req: PassportRequest,
     @Param(OBJECT_ID) id: string
   ): Observable<User> {
-    if (!req.user.admin && req.user.id !== id)
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     return this.user.findOneById(id);
   }
 
@@ -54,8 +52,7 @@ export class UserController {
   @ApiOkResponse({ type: User, isArray: true })
   @Get('all')
   public getAll(@Req() req: PassportRequest): Observable<User[]> {
-    if (!req.user.admin)
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    if (!req.user.admin) throw new ForbiddenException();
     return this.user.findAll();
   }
 
@@ -77,7 +74,7 @@ export class UserController {
       (!req.user.admin && dto.admin != null) ||
       (!req.user.admin && dto.irrigationSystems != null)
     )
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new ForbiddenException();
     return this.user.update(id, dto);
   }
 }

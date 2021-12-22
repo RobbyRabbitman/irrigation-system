@@ -7,11 +7,11 @@ import {
   Controller,
   Get,
   Param,
-  UnauthorizedException,
   UseGuards,
   Request,
   Put,
   Body,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
@@ -38,7 +38,7 @@ export class IrrigationSystemController {
       !req.user.admin &&
       !req.user.irrigationSystems.map(({ id }) => id).includes(id)
     )
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     return this.irrigationSystem.findOne(id);
   }
 
@@ -47,7 +47,7 @@ export class IrrigationSystemController {
   public getAll(
     @Request() req: PassportRequest
   ): Observable<IrrigationSystem[]> {
-    if (!req.user.admin) throw new UnauthorizedException();
+    if (!req.user.admin) throw new ForbiddenException();
     return this.irrigationSystem.findAll();
   }
 
@@ -58,7 +58,7 @@ export class IrrigationSystemController {
     @Param(OBJECT_ID) id: string,
     @Body() dto: UpdateIrrigationSystemDTO
   ) {
-    if (!req.user.admin) throw new UnauthorizedException();
+    if (!req.user.admin) throw new ForbiddenException();
     else return this.irrigationSystem.updateOne(id, dto);
   }
 }
