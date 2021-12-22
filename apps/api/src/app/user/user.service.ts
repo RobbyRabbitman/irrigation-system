@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, Observable } from 'rxjs';
-import { removeFalsy } from '@irrigation/shared/util';
+import { removeNullish } from '@irrigation/shared/util';
 @Injectable()
 export class UserService {
   public constructor(
@@ -76,7 +76,7 @@ export class UserService {
         .findByIdAndUpdate(
           id,
           {
-            ...removeFalsy(rest),
+            ...removeNullish(rest),
             $addToSet: { irrigationSystems },
           },
           { new: true }

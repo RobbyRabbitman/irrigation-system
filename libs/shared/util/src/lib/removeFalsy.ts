@@ -1,8 +1,6 @@
-import { isNonNull } from './isNonNull';
+import { isNullish } from '..';
 
-export function removeFalsy<T>(obj: T): Partial<T> {
-  for (const key in obj) {
-    if (!isNonNull(obj[key])) delete obj[key];
-  }
+export function removeNullish<T>(obj: T): Partial<T> {
+  for (const key in obj) if (isNullish(obj[key])) delete obj[key];
   return obj;
 }
