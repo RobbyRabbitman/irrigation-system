@@ -42,7 +42,7 @@ export class PumpController {
   }
 
   @ApiOkResponse({ type: Pump })
-  @Post(`${OBJECT_ID}`)
+  @Post(`:${OBJECT_ID}`)
   public update(
     @Req() req: PassportRequest,
     @Param(OBJECT_ID) id: string,
