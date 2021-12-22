@@ -8,8 +8,6 @@ import {
   Body,
   Controller,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Req,
@@ -31,7 +29,7 @@ import { PumpService } from './pump.service';
 @ApiTags('pump')
 @Controller('pump')
 export class PumpController {
-  public constructor(private readonly pump: PumpService) {}
+  public constructor(private readonly pumpService: PumpService) {}
 
   @ApiCreatedResponse({ type: Pump })
   @Post()
@@ -40,7 +38,7 @@ export class PumpController {
     @Body() dto: CreatePumpDTO
   ): Observable<Pump> {
     if (!req.user.admin) throw new ForbiddenException();
-    return this.pump.create(dto);
+    return this.pumpService.createOne(dto);
   }
 
   @ApiOkResponse({ type: Pump })
@@ -51,6 +49,6 @@ export class PumpController {
     @Body() dto: UpdatePumpDTO
   ): Observable<Pump> {
     if (!req.user.admin) throw new ForbiddenException();
-    return this.pump.updateOne(id, dto);
+    return this.pumpService.updateOne(id, dto);
   }
 }
