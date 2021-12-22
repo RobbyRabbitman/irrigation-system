@@ -34,8 +34,10 @@ export class IrrigationSystemController {
     @Request() req: PassportRequest,
     @Param(OBJECT_ID) id: string
   ) {
-    if (!req.user)
-      //TODO
+    if (
+      !req.user.admin &&
+      !req.user.irrigationSystems.map(({ id }) => id).includes(id)
+    )
       throw new UnauthorizedException();
     return this.irrigationSystem.findOne(id);
   }
