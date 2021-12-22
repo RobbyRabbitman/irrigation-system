@@ -1,9 +1,9 @@
 import {
   CreateIrrigationSystemDTO,
-  Identifyable,
   IrrigationSystem,
   IrrigationSystemDocument,
   IrrigationSystemName,
+  UpdateIrrigationSystemDTO,
 } from '@irrigation/shared/model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -31,16 +31,14 @@ export class IrrigationSystemService {
     return from(this.model.create(value));
   }
 
-  public addPumps(
-    irrigationSystem: string,
-    pumps: Identifyable[]
+  public updateOne(
+    id: string,
+    { name, pumps }: UpdateIrrigationSystemDTO
   ): Observable<IrrigationSystem> {
     return from(
       this.model.findByIdAndUpdate(
-        irrigationSystem,
-        {
-          $addToSet: { pumps },
-        },
+        id,
+        { name, $addToSet: { pumps } },
         { new: true }
       )
     );

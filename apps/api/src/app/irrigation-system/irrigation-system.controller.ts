@@ -1,7 +1,7 @@
 import {
-  Identifyable,
   IrrigationSystem,
   OBJECT_ID,
+  UpdateIrrigationSystemDTO,
 } from '@irrigation/shared/model';
 import {
   Controller,
@@ -50,15 +50,13 @@ export class IrrigationSystemController {
   }
 
   @ApiOkResponse({ type: IrrigationSystem })
-  @Put(`:${OBJECT_ID}/pumps`)
+  @Put(`:${OBJECT_ID}`)
   public addPumps(
     @Request() req: PassportRequest,
     @Param(OBJECT_ID) id: string,
-    @Body() dto: Identifyable[]
+    @Body() dto: UpdateIrrigationSystemDTO
   ) {
-    if (!req.user)
-      //TODO
-      throw new UnauthorizedException();
-    return this.irrigationSystem.addPumps(id, dto);
+    if (!req.user.admin) throw new UnauthorizedException();
+    else return this.irrigationSystem.updateOne(id, dto);
   }
 }
