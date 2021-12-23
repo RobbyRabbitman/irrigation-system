@@ -14,10 +14,11 @@ import {
   Configuration,
   CreateUserDTO,
   Login,
+  UpdateUserDTO,
   User,
   UserService,
 } from '@irrigation/generated/client';
-import { throwIfNullish } from '@irrigation/shared/util';
+import { isNonNull, throwIfNullish } from '@irrigation/shared/util';
 import { LocalStorageService } from './local-storage.service';
 @Injectable()
 export class StoreService {
@@ -26,6 +27,8 @@ export class StoreService {
     undefined
   );
   public readonly user$ = this._user$.asObservable().pipe(shareReplay(1));
+  private readonly _users$ = new BehaviorSubject<User[] | undefined>(undefined);
+  public readonly users$ = this._users$.asObservable().pipe(shareReplay(1));
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
@@ -46,10 +49,32 @@ export class StoreService {
       .subscribe();
   }
 
+  public dispatchGetAllUsers(): Observable<void> {
+    return this.userService
+      .getAll()
+      .pipe(map((users) => this._users$.next(users)));
+  }
+
   public dispatchLogin(login: Login): Observable<void> {
     return this.authService
       .login(login)
       .pipe(map((user) => this._user$.next(user)));
+  }
+
+  public dispatchUpdateUser(id: string, dto: UpdateUserDTO): Observable<void> {
+    return this.userService.update(dto, id).pipe(
+      map((user) => {
+        if (this._user$.value?.id === user.id) this._user$.next(user);
+        const users = this._users$.value;
+        if (isNonNull(users)) {
+          const userIndex = users.findIndex((user) => user.id === user.id);
+          if (userIndex > 0) {
+            users[userIndex] = user;
+            this._users$.next(users);
+          }
+        }
+      })
+    );
   }
 
   public dispatchLogout(): Observable<void> {

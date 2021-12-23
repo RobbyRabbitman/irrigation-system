@@ -1,1 +1,13 @@
-<p>admin works!</p>
+<mat-card *ngFor="let user of store.users$ | async">
+  <mat-card-header>
+    <mat-card-title>
+      {{ user.username }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <irrigation-edit-user
+      [user]="user"
+      (edit)="_onEdit(user.id, $event)"
+    ></irrigation-edit-user>
+  </mat-card-content>
+</mat-card>
