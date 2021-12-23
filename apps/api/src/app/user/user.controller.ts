@@ -59,7 +59,12 @@ export class UserController {
 
   @ApiCreatedResponse({ type: User })
   @Post()
-  public create(@Body() dto: CreateUserDTO): Observable<User> {
+  public create(
+    @Req() req: PassportRequest,
+    @Body() dto: CreateUserDTO
+  ): Observable<User> {
+    if (!req.user.admin && dto.authenticated === true)
+      throw new ForbiddenException();
     return this.user.create(dto);
   }
 
