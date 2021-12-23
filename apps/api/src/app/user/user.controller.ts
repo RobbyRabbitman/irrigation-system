@@ -4,6 +4,7 @@ import {
   UpdateUserDTO,
   User,
 } from '@irrigation/shared/model';
+import { isNonNull } from '@irrigation/shared/util';
 import {
   Controller,
   Get,
@@ -72,7 +73,8 @@ export class UserController {
     if (
       (!req.user.admin && req.user.id !== id) ||
       (!req.user.admin && dto.admin != null) ||
-      (!req.user.admin && dto.irrigationSystems != null)
+      (!req.user.admin && dto.irrigationSystems != null) ||
+      (!req.user.admin && isNonNull(dto.authenticated))
     )
       throw new ForbiddenException();
     return this.user.update(id, dto);

@@ -16,6 +16,10 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsString()
   password!: string;
+  @ApiProperty({ required: true })
+  @IsBoolean()
+  @IsNotEmpty()
+  authenticated!: boolean;
 }
 
 export class UpdateUserDTO {
@@ -39,4 +43,8 @@ export class UpdateUserDTO {
   @IsString()
   @IsOptional()
   jwt?: string;
+  @ApiProperty({ required: false })
+  @IsBoolean()
+  @IsOptional()
+  authenticated?: boolean;
 }
