@@ -72,8 +72,8 @@ export class UserController {
   ): Observable<User> {
     if (
       (!req.user.admin && req.user.id !== id) ||
-      (!req.user.admin && dto.admin != null) ||
-      (!req.user.admin && dto.irrigationSystems != null) ||
+      (!req.user.admin && isNonNull(dto.admin)) ||
+      (!req.user.admin && isNonNull(dto.irrigationSystems)) ||
       (!req.user.admin && isNonNull(dto.authenticated))
     )
       throw new ForbiddenException();
