@@ -12,13 +12,13 @@ import {
 import {
   AuthService,
   Configuration,
+  CreateUserDTO,
   Login,
   User,
   UserService,
 } from '@irrigation/generated/client';
 import { throwIfNullish } from '@irrigation/shared/util';
 import { LocalStorageService } from './local-storage.service';
-import { CreateUserDTO } from '@irrigation/shared/model';
 @Injectable()
 export class StoreService {
   private readonly LOCAL_STORAGE_JWT = 'jwt';
