@@ -67,10 +67,12 @@ export class StoreService {
         if (this._user$.value?.id === user.id) this._user$.next(user);
         const users = this._users$.value;
         if (isNonNull(users)) {
-          const userIndex = users.findIndex((user) => user.id === user.id);
-          if (userIndex > 0) {
+          const userIndex = users.findIndex(
+            (current) => current.id === user.id
+          );
+          if (userIndex >= 0) {
             users[userIndex] = user;
-            this._users$.next(users);
+            this._users$.next([...users]);
           }
         }
       })
