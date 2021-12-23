@@ -34,6 +34,13 @@ import { UserService } from './user.service';
 export class UserController {
   public constructor(private readonly user: UserService) {}
 
+  @ApiOkResponse({ type: User, isArray: true })
+  @Get('all')
+  public getAll(@Req() req: PassportRequest): Observable<User[]> {
+    if (!req.user.admin) throw new ForbiddenException();
+    return this.user.findAll();
+  }
+
   @ApiOkResponse({ type: User })
   @Get(`:${OBJECT_ID}`)
   public getById(
@@ -48,13 +55,6 @@ export class UserController {
   @Get()
   public get(@Req() req: PassportRequest): Observable<User> {
     return this.user.findOneById(req.user.id);
-  }
-
-  @ApiOkResponse({ type: User, isArray: true })
-  @Get('all')
-  public getAll(@Req() req: PassportRequest): Observable<User[]> {
-    if (!req.user.admin) throw new ForbiddenException();
-    return this.user.findAll();
   }
 
   @ApiCreatedResponse({ type: User })
