@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    MatIconModule,
   ],
   declarations: [AdminComponent, EditUserComponent],
 })
