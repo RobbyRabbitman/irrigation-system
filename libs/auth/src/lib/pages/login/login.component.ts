@@ -72,6 +72,7 @@ export class LoginComponent {
         .dispatchSignUp({
           username: this.control_username.value,
           password: this.control_password.value,
+          authenticated: false,
         })
         .pipe(
           switchMapTo(

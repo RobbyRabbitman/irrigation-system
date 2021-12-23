@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { IrrigationSystem } from '../model/irrigationSystem';
+import { UpdateIrrigationSystemDTO } from '../model/updateIrrigationSystemDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -63,10 +64,10 @@ export class IrrigationSystemService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addPumps(body: Array<string>, id: string, observe?: 'body', reportProgress?: boolean): Observable<IrrigationSystem>;
-    public addPumps(body: Array<string>, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IrrigationSystem>>;
-    public addPumps(body: Array<string>, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IrrigationSystem>>;
-    public addPumps(body: Array<string>, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<IrrigationSystem>;
+    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IrrigationSystem>>;
+    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IrrigationSystem>>;
+    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling addPumps.');
@@ -103,9 +104,52 @@ export class IrrigationSystemService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<IrrigationSystem>('put',`${this.basePath}/irrigation-system/${encodeURIComponent(String(id))}/pumps`,
+        return this.httpClient.request<IrrigationSystem>('put',`${this.basePath}/irrigation-system/${encodeURIComponent(String(id))}`,
             {
                 body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAll(observe?: 'body', reportProgress?: boolean): Observable<Array<IrrigationSystem>>;
+    public getAll(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<IrrigationSystem>>>;
+    public getAll(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<IrrigationSystem>>>;
+    public getAll(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<IrrigationSystem>>('get',`${this.basePath}/irrigation-system/all`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

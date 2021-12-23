@@ -14,6 +14,7 @@ import { IrrigationSystem } from './irrigationSystem';
 export interface User { 
     id: string;
     username: string;
+    authenticated: boolean;
     irrigationSystems?: Array<IrrigationSystem>;
     admin?: boolean;
     jwt?: string;

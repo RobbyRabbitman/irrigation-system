@@ -10,11 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface UpdateUserDTO { 
-    username?: string;
-    password?: string;
-    admin?: boolean;
-    irrigationSystems?: Array<string>;
-    jwt?: string;
-    authenticated?: boolean;
+export interface UpdateIrrigationSystemDTO { 
+    name?: string;
+    pumps?: Array<string>;
 }

@@ -5,5 +5,7 @@ export * from './createUserDTO';
 export * from './irrigationSystem';
 export * from './login';
 export * from './pump';
+export * from './updateIrrigationSystemDTO';
+export * from './updatePumpDTO';
 export * from './updateUserDTO';
 export * from './user';
