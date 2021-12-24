@@ -77,7 +77,7 @@ export class UserService {
           id,
           {
             ...removeNullish(rest),
-            $addToSet: { irrigationSystems },
+            $set: { irrigationSystems },
           },
           { new: true }
         )
