@@ -16,10 +16,11 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { PassportRequest } from '../model/Passport';
 import { IrrigationSystemService } from './irrigation-system.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthenticatedUserGuard)
 @ApiBearerAuth()
 @ApiTags(IrrigationSystemController.RESOURCE)
 @Controller(IrrigationSystemController.RESOURCE)

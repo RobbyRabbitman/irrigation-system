@@ -23,10 +23,11 @@ import {
 } from '@nestjs/swagger';
 import { map, Observable, switchMap } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthenticatedUserGuard)
 @ApiBearerAuth()
 @ApiTags(BookingController.RESOURCE)
 @Controller(BookingController.RESOURCE)

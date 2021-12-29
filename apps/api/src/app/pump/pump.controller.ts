@@ -9,9 +9,10 @@ import {
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { PumpService } from './pump.service';
 
-@UseGuards(JwtAuthGuard, AdminGuard)
+@UseGuards(JwtAuthGuard, AdminGuard, AuthenticatedUserGuard)
 @ApiBearerAuth()
 @ApiTags(PumpController.RESOURCE)
 @Controller(PumpController.RESOURCE)
