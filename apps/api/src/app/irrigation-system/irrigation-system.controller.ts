@@ -9,9 +9,9 @@ import {
   Param,
   UseGuards,
   Request,
-  Put,
   Body,
   ForbiddenException,
+  Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
@@ -52,7 +52,7 @@ export class IrrigationSystemController {
   }
 
   @ApiOkResponse({ type: IrrigationSystem })
-  @Put(`:${OBJECT_ID}`)
+  @Post(`:${OBJECT_ID}`)
   public addPumps(
     @Request() req: PassportRequest,
     @Param(OBJECT_ID) id: string,
