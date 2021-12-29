@@ -4,15 +4,7 @@ import {
   Pump,
   UpdatePumpDTO,
 } from '@irrigation/shared/model';
-import {
-  Body,
-  Controller,
-  ForbiddenException,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -21,10 +13,10 @@ import {
 } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
-import { PassportRequest } from '../model/Passport';
+import { AdminGuard } from '../guards/admin.guard';
 import { PumpService } from './pump.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AdminGuard)
 @ApiBearerAuth()
 @ApiTags('pump')
 @Controller('pump')
@@ -33,22 +25,16 @@ export class PumpController {
 
   @ApiCreatedResponse({ type: Pump })
   @Post()
-  public create(
-    @Req() req: PassportRequest,
-    @Body() dto: CreatePumpDTO
-  ): Observable<Pump> {
-    if (!req.user.admin) throw new ForbiddenException();
+  public create(@Body() dto: CreatePumpDTO): Observable<Pump> {
     return this.pumpService.createOne(dto);
   }
 
   @ApiOkResponse({ type: Pump })
   @Post(`:${OBJECT_ID}`)
   public update(
-    @Req() req: PassportRequest,
     @Param(OBJECT_ID) id: string,
     @Body() dto: UpdatePumpDTO
   ): Observable<Pump> {
-    if (!req.user.admin) throw new ForbiddenException();
     return this.pumpService.updateOne(id, dto);
   }
 }

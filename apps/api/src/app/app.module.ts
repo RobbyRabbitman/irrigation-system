@@ -6,6 +6,7 @@ import { IrrigationSystemModule } from './irrigation-system/irrigation-system.mo
 import { UserModule } from './user/user.module';
 import { PumpModule } from './pump/pump.module';
 import { BookingModule } from './booking/booking.module';
+import { AdminGuard } from './guards/admin.guard';
 
 @Module({
   imports: [
@@ -16,5 +17,6 @@ import { BookingModule } from './booking/booking.module';
     IrrigationSystemModule,
     BookingModule,
   ],
+  providers: [AdminGuard],
 })
 export class AppModule {}

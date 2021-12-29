@@ -16,6 +16,7 @@ import {
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { PassportRequest } from '../model/Passport';
 import { IrrigationSystemService } from './irrigation-system.service';
 
@@ -42,23 +43,20 @@ export class IrrigationSystemController {
     return this.irrigationSystem.findOne(id);
   }
 
+  @UseGuards(AdminGuard)
   @ApiOkResponse({ type: IrrigationSystem, isArray: true })
   @Get(`all`)
-  public getAll(
-    @Request() req: PassportRequest
-  ): Observable<IrrigationSystem[]> {
-    if (!req.user.admin) throw new ForbiddenException();
+  public getAll(): Observable<IrrigationSystem[]> {
     return this.irrigationSystem.findAll();
   }
 
+  @UseGuards(AdminGuard)
   @ApiOkResponse({ type: IrrigationSystem })
   @Post(`:${OBJECT_ID}`)
   public addPumps(
-    @Request() req: PassportRequest,
     @Param(OBJECT_ID) id: string,
     @Body() dto: UpdateIrrigationSystemDTO
   ) {
-    if (!req.user.admin) throw new ForbiddenException();
-    else return this.irrigationSystem.updateOne(id, dto);
+    return this.irrigationSystem.updateOne(id, dto);
   }
 }

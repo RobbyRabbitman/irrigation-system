@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from './user.service';
 
@@ -81,14 +82,13 @@ export class UserController {
     return this.user.update(id, dto);
   }
 
+  @UseGuards(AdminGuard)
   @ApiOkResponse({ type: User })
   @Post(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
   public addToIrrigationSystem(
-    @Req() req: PassportRequest,
     @Param(USER) user: string,
     @Param(IRRIGATION_SYSTEM) irrigationSystem: string
   ): Observable<User> {
-    if (!req.user.admin) throw new ForbiddenException();
     return this.user.updateIrrigationSystems(
       user,
       irrigationSystem,
@@ -96,14 +96,13 @@ export class UserController {
     );
   }
 
+  @UseGuards(AdminGuard)
   @ApiOkResponse({ type: User })
   @Delete(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
   public deleteIrrigationSystem(
-    @Req() req: PassportRequest,
     @Param(USER) user: string,
     @Param(IRRIGATION_SYSTEM) irrigationSystem: string
   ): Observable<User> {
-    if (!req.user.admin) throw new ForbiddenException();
     return this.user.updateIrrigationSystems(user, irrigationSystem, '$pull');
   }
 }
