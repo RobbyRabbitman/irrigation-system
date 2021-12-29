@@ -35,12 +35,8 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsBoolean()
   admin?: boolean;
+
   @ApiProperty({ required: false })
-  @IsOptional()
-  @IsArray()
-  irrigationSystems?: string[];
-  @ApiProperty({ required: false })
-  @IsString()
   @IsOptional()
   jwt?: string;
   @ApiProperty({ required: false })

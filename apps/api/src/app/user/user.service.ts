@@ -70,14 +70,38 @@ export class UserService {
     );
   }
 
-  public update(id: string, { irrigationSystems, ...rest }: UpdateUserDTO) {
+  public update(id: string, dto: UpdateUserDTO) {
     return from(
       this.model
         .findByIdAndUpdate(
           id,
           {
-            ...removeNullish(rest),
-            $set: { irrigationSystems },
+            ...removeNullish(dto),
+          },
+          { new: true }
+        )
+        .populate('irrigationSystems')
+        .populate({
+          path: 'irrigationSystems',
+          populate: {
+            path: 'pumps',
+            model: Pump.name,
+          },
+        })
+    );
+  }
+
+  public updateIrrigationSystems(
+    id: string,
+    irrigationSystem: string,
+    op: '$addToSet' | '$pull'
+  ) {
+    return from(
+      this.model
+        .findByIdAndUpdate(
+          id,
+          {
+            [op]: { irrigationSystems: irrigationSystem },
           },
           { new: true }
         )

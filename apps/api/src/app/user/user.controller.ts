@@ -1,9 +1,4 @@
-import {
-  CreateUserDTO,
-  OBJECT_ID,
-  UpdateUserDTO,
-  User,
-} from '@irrigation/shared/model';
+import { CreateUserDTO, UpdateUserDTO, User } from '@irrigation/shared/model';
 import { isNonNull } from '@irrigation/shared/util';
 import {
   Controller,
@@ -15,6 +10,7 @@ import {
   Param,
   Post,
   ForbiddenException,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -27,6 +23,8 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from './user.service';
 
+const USER = 'user';
+const IRRIGATION_SYSTEM = 'irrigationSystem';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags('user')
@@ -42,10 +40,10 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User })
-  @Get(`:${OBJECT_ID}`)
+  @Get(`:${USER}`)
   public getById(
     @Req() req: PassportRequest,
-    @Param(OBJECT_ID) id: string
+    @Param(USER) id: string
   ): Observable<User> {
     if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     return this.user.findOneById(id);
@@ -69,19 +67,44 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User })
-  @Put(`:${OBJECT_ID}`)
+  @Put(`:${USER}`)
   public update(
     @Req() req: PassportRequest,
     @Body() dto: UpdateUserDTO,
-    @Param(OBJECT_ID) id: string
+    @Param(USER) id: string
   ): Observable<User> {
     if (
       (!req.user.admin && req.user.id !== id) ||
       (!req.user.admin && isNonNull(dto.admin)) ||
-      (!req.user.admin && isNonNull(dto.irrigationSystems)) ||
       (!req.user.admin && isNonNull(dto.authenticated))
     )
       throw new ForbiddenException();
     return this.user.update(id, dto);
+  }
+
+  @ApiOkResponse({ type: User })
+  @Post(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
+  public addToIrrigationSystem(
+    @Req() req: PassportRequest,
+    @Param(USER) user: string,
+    @Param(IRRIGATION_SYSTEM) irrigationSystem: string
+  ): Observable<User> {
+    if (!req.user.admin) throw new ForbiddenException();
+    return this.user.updateIrrigationSystems(
+      user,
+      irrigationSystem,
+      '$addToSet'
+    );
+  }
+
+  @ApiOkResponse({ type: User })
+  @Delete(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
+  public deleteIrrigationSystem(
+    @Req() req: PassportRequest,
+    @Param(USER) user: string,
+    @Param(IRRIGATION_SYSTEM) irrigationSystem: string
+  ): Observable<User> {
+    if (!req.user.admin) throw new ForbiddenException();
+    return this.user.updateIrrigationSystems(user, irrigationSystem, '$pull');
   }
 }
