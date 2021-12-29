@@ -20,16 +20,16 @@ import {
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { IrrigationSystemController } from '../irrigation-system/irrigation-system.controller';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from './user.service';
 
-const USER = 'user';
-const IRRIGATION_SYSTEM = 'irrigationSystem';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
-@ApiTags('user')
-@Controller('user')
+@ApiTags(UserController.RESOURCE)
+@Controller(UserController.RESOURCE)
 export class UserController {
+  public static readonly RESOURCE = 'user';
   public constructor(private readonly user: UserService) {}
 
   @ApiOkResponse({ type: User, isArray: true })
@@ -40,10 +40,10 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User })
-  @Get(`:${USER}`)
+  @Get(`:${UserController.RESOURCE}`)
   public getById(
     @Req() req: PassportRequest,
-    @Param(USER) id: string
+    @Param(UserController.RESOURCE) id: string
   ): Observable<User> {
     if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     return this.user.findOneById(id);
@@ -67,11 +67,11 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User })
-  @Post(`:${USER}`)
+  @Post(`:${UserController.RESOURCE}`)
   public update(
     @Req() req: PassportRequest,
     @Body() dto: UpdateUserDTO,
-    @Param(USER) id: string
+    @Param(UserController.RESOURCE) id: string
   ): Observable<User> {
     if (
       (!req.user.admin && req.user.id !== id) ||
@@ -84,10 +84,12 @@ export class UserController {
 
   @UseGuards(AdminGuard)
   @ApiOkResponse({ type: User })
-  @Post(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
+  @Post(
+    `:${UserController.RESOURCE}/irrigationSystems/:${IrrigationSystemController.RESOURCE}`
+  )
   public addToIrrigationSystem(
-    @Param(USER) user: string,
-    @Param(IRRIGATION_SYSTEM) irrigationSystem: string
+    @Param(UserController.RESOURCE) user: string,
+    @Param(IrrigationSystemController.RESOURCE) irrigationSystem: string
   ): Observable<User> {
     return this.user.updateIrrigationSystems(
       user,
@@ -98,10 +100,12 @@ export class UserController {
 
   @UseGuards(AdminGuard)
   @ApiOkResponse({ type: User })
-  @Delete(`:${USER}/irrigation-systems/:${IRRIGATION_SYSTEM}`)
+  @Delete(
+    `:${UserController.RESOURCE}/irrigationSystems/:${IrrigationSystemController.RESOURCE}`
+  )
   public deleteIrrigationSystem(
-    @Param(USER) user: string,
-    @Param(IRRIGATION_SYSTEM) irrigationSystem: string
+    @Param(UserController.RESOURCE) user: string,
+    @Param(IrrigationSystemController.RESOURCE) irrigationSystem: string
   ): Observable<User> {
     return this.user.updateIrrigationSystems(user, irrigationSystem, '$pull');
   }

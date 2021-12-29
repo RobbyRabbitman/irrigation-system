@@ -24,13 +24,12 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
 
-const RESOURCE = 'booking';
-
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
-@ApiTags(RESOURCE)
-@Controller(RESOURCE)
+@ApiTags(BookingController.RESOURCE)
+@Controller(BookingController.RESOURCE)
 export class BookingController {
+  public static readonly RESOURCE = 'booking';
   public constructor(private readonly bookingService: BookingService) {}
 
   @ApiCreatedResponse({ type: Booking })
@@ -59,10 +58,10 @@ export class BookingController {
   }
 
   @ApiNoContentResponse()
-  @Delete(`:${RESOURCE}`)
+  @Delete(`:${BookingController.RESOURCE}`)
   public deleteBooking(
     @Req() req: PassportRequest,
-    @Param(RESOURCE) id: string
+    @Param(BookingController.RESOURCE) id: string
   ): Observable<void> {
     if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     else return this.bookingService.deleteById(id);

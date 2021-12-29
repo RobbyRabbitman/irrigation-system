@@ -1,9 +1,4 @@
-import {
-  CreatePumpDTO,
-  OBJECT_ID,
-  Pump,
-  UpdatePumpDTO,
-} from '@irrigation/shared/model';
+import { CreatePumpDTO, Pump, UpdatePumpDTO } from '@irrigation/shared/model';
 import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -18,9 +13,10 @@ import { PumpService } from './pump.service';
 
 @UseGuards(JwtAuthGuard, AdminGuard)
 @ApiBearerAuth()
-@ApiTags('pump')
-@Controller('pump')
+@ApiTags(PumpController.RESOURCE)
+@Controller(PumpController.RESOURCE)
 export class PumpController {
+  public static readonly RESOURCE = 'pump';
   public constructor(private readonly pumpService: PumpService) {}
 
   @ApiCreatedResponse({ type: Pump })
@@ -30,9 +26,9 @@ export class PumpController {
   }
 
   @ApiOkResponse({ type: Pump })
-  @Post(`:${OBJECT_ID}`)
+  @Post(`:${PumpController.RESOURCE}`)
   public update(
-    @Param(OBJECT_ID) id: string,
+    @Param(PumpController.RESOURCE) id: string,
     @Body() dto: UpdatePumpDTO
   ): Observable<Pump> {
     return this.pumpService.updateOne(id, dto);

@@ -1,6 +1,5 @@
 import {
   IrrigationSystem,
-  OBJECT_ID,
   UpdateIrrigationSystemDTO,
 } from '@irrigation/shared/model';
 import {
@@ -22,18 +21,19 @@ import { IrrigationSystemService } from './irrigation-system.service';
 
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
-@ApiTags('irrigation-system')
-@Controller('irrigation-system')
+@ApiTags(IrrigationSystemController.RESOURCE)
+@Controller(IrrigationSystemController.RESOURCE)
 export class IrrigationSystemController {
+  public static readonly RESOURCE = 'irrigationSystem';
   public constructor(
     private readonly irrigationSystem: IrrigationSystemService
   ) {}
 
   @ApiOkResponse({ type: IrrigationSystem, isArray: true })
-  @Get(`:${OBJECT_ID}`)
+  @Get(`:${IrrigationSystemController.RESOURCE}`)
   public getIrrigationSystem(
     @Request() req: PassportRequest,
-    @Param(OBJECT_ID) id: string
+    @Param(IrrigationSystemController.RESOURCE) id: string
   ) {
     if (
       !req.user.admin &&
@@ -52,9 +52,9 @@ export class IrrigationSystemController {
 
   @UseGuards(AdminGuard)
   @ApiOkResponse({ type: IrrigationSystem })
-  @Post(`:${OBJECT_ID}`)
+  @Post(`:${IrrigationSystemController.RESOURCE}`)
   public addPumps(
-    @Param(OBJECT_ID) id: string,
+    @Param(IrrigationSystemController.RESOURCE) id: string,
     @Body() dto: UpdateIrrigationSystemDTO
   ) {
     return this.irrigationSystem.updateOne(id, dto);
