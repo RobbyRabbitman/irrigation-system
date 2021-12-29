@@ -14,6 +14,10 @@ export class BookingService {
     @InjectModel(Booking.name) private readonly model: Model<BookingDocument>
   ) {}
 
+  public findOneById(id: string): Observable<Booking> {
+    return rxjsFrom(this.model.findById(id));
+  }
+
   public create(dto: CreateBookingDTO): Observable<Booking> {
     return rxjsFrom(
       this.model
