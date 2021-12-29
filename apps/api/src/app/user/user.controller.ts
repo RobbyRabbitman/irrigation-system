@@ -32,10 +32,10 @@ export class UserController {
   public static readonly RESOURCE = 'user';
   public constructor(private readonly user: UserService) {}
 
+  @UseGuards(AdminGuard)
   @ApiOkResponse({ type: User, isArray: true })
   @Get('all')
-  public getAll(@Req() req: PassportRequest): Observable<User[]> {
-    if (!req.user.admin) throw new ForbiddenException();
+  public getAll(): Observable<User[]> {
     return this.user.findAll();
   }
 
