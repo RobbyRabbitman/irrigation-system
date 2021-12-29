@@ -1,5 +1,6 @@
-import { Booking, CreateBookingDTO, OBJECT_ID } from '@irrigation/shared/model';
+import { Booking, CreateBookingDTO } from '@irrigation/shared/model';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -25,10 +26,12 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
 
+const RESOURCE = 'booking';
+
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
-@ApiTags('booking')
-@Controller('booking')
+@ApiTags(RESOURCE)
+@Controller(RESOURCE)
 export class BookingController {
   public constructor(private readonly bookingService: BookingService) {}
 
@@ -51,17 +54,17 @@ export class BookingController {
           dto.from >= dto.to ||
           bookings.some(({ from, to }) => dto.to > from && dto.from < to)
         )
-          throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+          throw new BadRequestException();
         return this.bookingService.create(dto);
       })
     );
   }
 
   @ApiNoContentResponse()
-  @Delete(`:${OBJECT_ID}`)
+  @Delete(`:${RESOURCE}`)
   public deleteBooking(
     @Req() req: PassportRequest,
-    @Param(OBJECT_ID) id: string
+    @Param(RESOURCE) id: string
   ): Observable<void> {
     if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
     else return this.bookingService.deleteById(id);
@@ -76,10 +79,10 @@ export class BookingController {
     @Query('to') to: number
   ) {
     if (
-      !req.user.irrigationSystems.some((x) =>
-        x.pumps.map((pump) => pump.id).includes(pump)
-      ) &&
-      !req.user.admin
+      // check if user must access this pump
+      !req.user.irrigationSystems.some(({ pumps }) =>
+        pumps.map(({ id }) => id).includes(pump)
+      )
     )
       throw new ForbiddenException();
     return this.bookingService.inPeriod(pump, from, to);
