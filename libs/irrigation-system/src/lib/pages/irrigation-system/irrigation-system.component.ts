@@ -217,7 +217,7 @@ export class IrrigationSystemComponent implements OnInit {
       timelineData.pumps.find(
         (pump) =>
           !pump.bookings.some(({ from, to }) => _to > from && _from < to)
-      ) ?? throwExpression('No free slots')
+      ) ?? throwExpression(new Error('No free slots'))
     );
   }
 }

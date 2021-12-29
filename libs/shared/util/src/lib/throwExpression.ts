@@ -1,3 +1,3 @@
-export function throwExpression(errorMessage: string): never {
-  throw new Error(errorMessage);
+export function throwExpression(error: Error): never {
+  throw error;
 }
