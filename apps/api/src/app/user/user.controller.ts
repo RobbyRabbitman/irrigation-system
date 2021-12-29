@@ -4,7 +4,6 @@ import {
   Controller,
   Get,
   UseGuards,
-  Put,
   Req,
   Body,
   Param,
@@ -67,7 +66,7 @@ export class UserController {
   }
 
   @ApiOkResponse({ type: User })
-  @Put(`:${USER}`)
+  @Post(`:${USER}`)
   public update(
     @Req() req: PassportRequest,
     @Body() dto: UpdateUserDTO,
