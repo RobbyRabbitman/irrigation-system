@@ -1,4 +1,5 @@
 import { Booking, CreateBookingDTO } from '@irrigation/shared/model';
+import { throwExpression, throwIfNullish } from '@irrigation/shared/util';
 import {
   BadRequestException,
   Body,
@@ -6,6 +7,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  NotFoundException,
   Param,
   Post,
   Query,
@@ -19,7 +21,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
@@ -63,8 +65,16 @@ export class BookingController {
     @Req() req: PassportRequest,
     @Param(BookingController.RESOURCE) id: string
   ): Observable<void> {
-    if (!req.user.admin && req.user.id !== id) throw new ForbiddenException();
-    else return this.bookingService.deleteById(id);
+    return this.bookingService.findOneById(id).pipe(
+      // check if booking exists
+      map((booking) => throwIfNullish(booking, new NotFoundException())),
+      switchMap((booking) =>
+        // check if user is admin or creator of booking
+        req.user.admin || req.user.id === booking.by.id
+          ? this.bookingService.deleteById(id)
+          : throwExpression(new ForbiddenException())
+      )
+    );
   }
 
   @ApiOkResponse({ isArray: true, type: Booking })
