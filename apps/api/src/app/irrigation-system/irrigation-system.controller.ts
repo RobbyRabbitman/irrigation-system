@@ -28,6 +28,13 @@ export class IrrigationSystemController {
     private readonly irrigationSystem: IrrigationSystemService
   ) {}
 
+  @UseGuards(AdminGuard)
+  @ApiOkResponse({ type: IrrigationSystem, isArray: true })
+  @Get(`all`)
+  public getAll(): Observable<IrrigationSystem[]> {
+    return this.irrigationSystem.findAll();
+  }
+
   @ApiOkResponse({ type: IrrigationSystem, isArray: true })
   @Get(`:${IrrigationSystemController.RESOURCE}`)
   public getIrrigationSystem(
@@ -40,13 +47,6 @@ export class IrrigationSystemController {
     )
       throw new ForbiddenException();
     return this.irrigationSystem.findOne(id);
-  }
-
-  @UseGuards(AdminGuard)
-  @ApiOkResponse({ type: IrrigationSystem, isArray: true })
-  @Get(`all`)
-  public getAll(): Observable<IrrigationSystem[]> {
-    return this.irrigationSystem.findAll();
   }
 
   @UseGuards(AdminGuard)
