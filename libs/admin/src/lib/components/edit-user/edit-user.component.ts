@@ -37,6 +37,10 @@ export class EditUserComponent implements OnInit, OnDestroy {
     });
   }
 
+  public _onLogout(): void {
+    this.edit.emit({ jwt: '' });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.complete();
   }

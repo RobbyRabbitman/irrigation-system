@@ -1,3 +1,4 @@
 <ng-container *ngIf="user">
   <mat-checkbox [formControl]="authenticated"> Authenticated </mat-checkbox>
+  <button mat-button color="accent" (click)="_onLogout()">Logout</button>
 </ng-container>
