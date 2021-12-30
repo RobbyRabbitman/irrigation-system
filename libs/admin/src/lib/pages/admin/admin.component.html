@@ -28,6 +28,7 @@
       <irrigation-edit-user
         [user]="user"
         (edit)="_onEdit(user.id, $event)"
+        [irrigationSystems]="store.irrigationSystems$ | async"
       ></irrigation-edit-user>
     </mat-card-content>
   </mat-card>

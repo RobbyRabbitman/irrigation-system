@@ -1,4 +1,52 @@
 <ng-container *ngIf="user">
   <mat-checkbox [formControl]="authenticated"> Authenticated </mat-checkbox>
-  <button mat-button color="accent" (click)="_onLogout()">Logout</button>
+  <button mat-button color="warn" (click)="_onLogout()">Logout</button>
+  <section class="irrigationSystems">
+    <h3>Irrigation Systems</h3>
+    <mat-form-field>
+      <mat-label>Irrigation System Id</mat-label>
+      <input
+        matInput
+        type="text"
+        [formControl]="irrigationSystem"
+        [matAutocomplete]="auto"
+      />
+      <button
+        matSuffix
+        mat-icon-button
+        (click)="irrigationSystem.setValue(irrigationSystemDefaultValue)"
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+      <mat-autocomplete #auto>
+        <mat-option
+          *ngFor="let irrigationSystem of irrigationSystems$ | async"
+          [value]="irrigationSystem.id"
+        >
+          {{ irrigationSystem.name }} ({{ irrigationSystem.id }})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button
+      mat-icon-button
+      color="accent"
+      (click)="_onAddIrrigationSystem(user)"
+    >
+      <mat-icon>add_circle</mat-icon>
+    </button>
+    <mat-list>
+      <mat-list-item *ngFor="let irrigationSystem of user.irrigationSystems">
+        <span matLine>{{ irrigationSystem.name }}</span>
+        <span matLine>{{ irrigationSystem.id }}</span>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="_onDeleteIrrigationSystem(user, irrigationSystem)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </section>
 </ng-container>

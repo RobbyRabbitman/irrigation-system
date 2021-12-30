@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
   public readonly searchControlDefaulValue = '';
   public _users$!: Observable<User[]>;
 
-  constructor(private readonly store: StoreService) {}
+  constructor(public readonly store: StoreService) {}
 
   ngOnInit(): void {
     this._users$ = combineLatest([
@@ -33,6 +33,7 @@ export class AdminComponent implements OnInit {
       )
     );
     this.store.dispatchGetAllUsers().subscribe();
+    this.store.dispatchGetAllIrrigationSystems().subscribe();
   }
 
   public _onEdit(id: string, dto: UpdateUserDTO): void {

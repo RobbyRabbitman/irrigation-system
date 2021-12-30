@@ -13,6 +13,8 @@ import {
   AuthService,
   Configuration,
   CreateUserDTO,
+  IrrigationSystem,
+  IrrigationSystemService,
   Login,
   UpdateUserDTO,
   User,
@@ -29,9 +31,16 @@ export class StoreService {
   public readonly user$ = this._user$.asObservable().pipe(shareReplay(1));
   private readonly _users$ = new BehaviorSubject<User[] | undefined>(undefined);
   public readonly users$ = this._users$.asObservable().pipe(shareReplay(1));
+  private readonly _irrigationSystems$ = new BehaviorSubject<
+    IrrigationSystem[] | undefined
+  >(undefined);
+  public readonly irrigationSystems$ = this._irrigationSystems$
+    .asObservable()
+    .pipe(shareReplay(1));
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly irrigationSystemService: IrrigationSystemService,
     private readonly localstorage: LocalStorageService,
     public readonly config: Configuration
   ) {
@@ -61,22 +70,50 @@ export class StoreService {
       .pipe(map((user) => this._user$.next(user)));
   }
 
+  public dispatchGetAllIrrigationSystems(): Observable<void> {
+    return this.irrigationSystemService
+      .getAll()
+      .pipe(
+        map((irrigationSystems) =>
+          this._irrigationSystems$.next(irrigationSystems)
+        )
+      );
+  }
+
   public dispatchUpdateUser(id: string, dto: UpdateUserDTO): Observable<void> {
-    return this.userService.update(dto, id).pipe(
-      map((user) => {
-        if (this._user$.value?.id === user.id) this._user$.next(user);
-        const users = this._users$.value;
-        if (isNonNull(users)) {
-          const userIndex = users.findIndex(
-            (current) => current.id === user.id
-          );
-          if (userIndex >= 0) {
-            users[userIndex] = user;
-            this._users$.next([...users]);
-          }
-        }
-      })
-    );
+    return this.userService
+      .update(dto, id)
+      .pipe(map((user) => this.updateUserState(user)));
+  }
+
+  public dispatchAddIrrigationSystemToUser(
+    user: string,
+    irrigationSystem: string
+  ): Observable<void> {
+    return this.userService
+      .addIrrigationSystem(user, irrigationSystem)
+      .pipe(map((user) => this.updateUserState(user)));
+  }
+
+  public dispatchDeleteIrrigationSystemFromUser(
+    user: string,
+    irrigationSystem: string
+  ): Observable<void> {
+    return this.userService
+      .deleteIrrigationSystem(user, irrigationSystem)
+      .pipe(map((user) => this.updateUserState(user)));
+  }
+
+  private updateUserState(newUser: User): void {
+    if (this._user$.value?.id === newUser.id) this._user$.next(newUser);
+    const users = this._users$.value;
+    if (isNonNull(users)) {
+      const userIndex = users.findIndex((current) => current.id === newUser.id);
+      if (userIndex >= 0) {
+        users[userIndex] = newUser;
+        this._users$.next([...users]);
+      }
+    }
   }
 
   public dispatchLogout(): Observable<void> {
