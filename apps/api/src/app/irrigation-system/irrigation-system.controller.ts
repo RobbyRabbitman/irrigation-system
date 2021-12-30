@@ -1,16 +1,13 @@
-import {
-  IrrigationSystem,
-  UpdateIrrigationSystemDTO,
-} from '@irrigation/shared/model';
+import { IrrigationSystem } from '@irrigation/shared/model';
 import {
   Controller,
   Get,
   Param,
   UseGuards,
   Request,
-  Body,
   ForbiddenException,
   Post,
+  Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
@@ -18,6 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { PassportRequest } from '../model/Passport';
+import { PumpController } from '../pump/pump.controller';
 import { IrrigationSystemService } from './irrigation-system.service';
 
 @UseGuards(JwtAuthGuard, AuthenticatedUserGuard)
@@ -53,11 +51,29 @@ export class IrrigationSystemController {
 
   @UseGuards(AdminGuard)
   @ApiOkResponse({ type: IrrigationSystem })
-  @Post(`:${IrrigationSystemController.RESOURCE}`)
-  public addPumps(
-    @Param(IrrigationSystemController.RESOURCE) id: string,
-    @Body() dto: UpdateIrrigationSystemDTO
+  @Post(
+    `:${IrrigationSystemController.RESOURCE}/pumps/:${PumpController.RESOURCE}`
+  )
+  public addPump(
+    @Param(IrrigationSystemController.RESOURCE) irrigationSystem: string,
+    @Param(PumpController.RESOURCE) pump: string
   ) {
-    return this.irrigationSystem.updateOne(id, dto);
+    return this.irrigationSystem.updatePumps(
+      irrigationSystem,
+      pump,
+      '$addToSet'
+    );
+  }
+
+  @UseGuards(AdminGuard)
+  @ApiOkResponse({ type: IrrigationSystem })
+  @Delete(
+    `:${IrrigationSystemController.RESOURCE}/pumps/:${PumpController.RESOURCE}`
+  )
+  public deletePump(
+    @Param(IrrigationSystemController.RESOURCE) irrigationSystem: string,
+    @Param(PumpController.RESOURCE) pump: string
+  ) {
+    return this.irrigationSystem.updatePumps(irrigationSystem, pump, '$pull');
   }
 }

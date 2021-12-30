@@ -16,8 +16,4 @@ export class UpdateIrrigationSystemDTO {
   @IsOptional()
   @IsString()
   name?: string;
-  @ApiProperty({ required: false })
-  @IsArray()
-  @IsOptional()
-  pumps?: string[];
 }

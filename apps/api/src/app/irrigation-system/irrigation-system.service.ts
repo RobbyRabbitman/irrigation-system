@@ -5,6 +5,7 @@ import {
   IrrigationSystemName,
   UpdateIrrigationSystemDTO,
 } from '@irrigation/shared/model';
+import { removeNullish } from '@irrigation/shared/util';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -18,11 +19,11 @@ export class IrrigationSystemService {
   ) {}
 
   public findOne(id: string): Observable<IrrigationSystem> {
-    return from(this.model.findById(id));
+    return from(this.model.findById(id).populate('pumps'));
   }
 
   public findAll(): Observable<IrrigationSystem[]> {
-    return from(this.model.find().exec());
+    return from(this.model.find().populate('pumps').exec());
   }
 
   public createOne(
@@ -33,14 +34,26 @@ export class IrrigationSystemService {
 
   public updateOne(
     id: string,
-    { name, pumps }: UpdateIrrigationSystemDTO
+    dto: UpdateIrrigationSystemDTO
   ): Observable<IrrigationSystem> {
     return from(
-      this.model.findByIdAndUpdate(
-        id,
-        { name, $addToSet: { pumps } },
-        { new: true }
-      )
+      this.model
+        .findByIdAndUpdate(id, { ...removeNullish(dto) }, { new: true })
+        .populate('pumps')
+    );
+  }
+
+  public updatePumps(id: string, pump: string, op: '$addToSet' | '$pull') {
+    return from(
+      this.model
+        .findByIdAndUpdate(
+          id,
+          {
+            [op]: { pumps: pump },
+          },
+          { new: true }
+        )
+        .populate('pumps')
     );
   }
 }

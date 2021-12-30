@@ -87,7 +87,7 @@ export class UserController {
   @Post(
     `:${UserController.RESOURCE}/irrigationSystems/:${IrrigationSystemController.RESOURCE}`
   )
-  public addToIrrigationSystem(
+  public addIrrigationSystem(
     @Param(UserController.RESOURCE) user: string,
     @Param(IrrigationSystemController.RESOURCE) irrigationSystem: string
   ): Observable<User> {
