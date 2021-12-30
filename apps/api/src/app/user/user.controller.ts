@@ -20,6 +20,7 @@ import {
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
+import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { IrrigationSystemController } from '../irrigation-system/irrigation-system.controller';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from './user.service';
@@ -32,7 +33,7 @@ export class UserController {
   public static readonly RESOURCE = 'user';
   public constructor(private readonly user: UserService) {}
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AdminGuard, AuthenticatedUserGuard)
   @ApiOkResponse({ type: User, isArray: true })
   @Get('all')
   public getAll(): Observable<User[]> {
@@ -82,7 +83,7 @@ export class UserController {
     return this.user.update(id, dto);
   }
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AdminGuard, AuthenticatedUserGuard)
   @ApiOkResponse({ type: User })
   @Post(
     `:${UserController.RESOURCE}/irrigationSystems/:${IrrigationSystemController.RESOURCE}`
@@ -98,7 +99,7 @@ export class UserController {
     );
   }
 
-  @UseGuards(AdminGuard)
+  @UseGuards(AdminGuard, AuthenticatedUserGuard)
   @ApiOkResponse({ type: User })
   @Delete(
     `:${UserController.RESOURCE}/irrigationSystems/:${IrrigationSystemController.RESOURCE}`
