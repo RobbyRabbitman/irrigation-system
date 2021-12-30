@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDTO {
@@ -16,10 +10,10 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsString()
   password!: string;
-  @ApiProperty({ required: true })
+  @ApiProperty({ required: false })
   @IsBoolean()
-  @IsNotEmpty()
-  authenticated!: boolean;
+  @IsOptional()
+  authenticated?: boolean;
 }
 
 export class UpdateUserDTO {
