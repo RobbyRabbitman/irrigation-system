@@ -115,21 +115,21 @@ export class PumpService {
      * 
      * 
      * @param body 
-     * @param id 
+     * @param pump 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public update(body: UpdatePumpDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<Pump>;
-    public update(body: UpdatePumpDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Pump>>;
-    public update(body: UpdatePumpDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Pump>>;
-    public update(body: UpdatePumpDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public update(body: UpdatePumpDTO, pump: string, observe?: 'body', reportProgress?: boolean): Observable<Pump>;
+    public update(body: UpdatePumpDTO, pump: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Pump>>;
+    public update(body: UpdatePumpDTO, pump: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Pump>>;
+    public update(body: UpdatePumpDTO, pump: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling update.');
         }
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update.');
+        if (pump === null || pump === undefined) {
+            throw new Error('Required parameter pump was null or undefined when calling update.');
         }
 
         let headers = this.defaultHeaders;
@@ -159,7 +159,7 @@ export class PumpService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Pump>('post',`${this.basePath}/pump/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Pump>('post',`${this.basePath}/pump/${encodeURIComponent(String(pump))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

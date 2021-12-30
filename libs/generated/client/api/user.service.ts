@@ -60,6 +60,59 @@ export class UserService {
     /**
      * 
      * 
+     * @param user 
+     * @param irrigationSystem 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addIrrigationSystem(user: string, irrigationSystem: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public addIrrigationSystem(user: string, irrigationSystem: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public addIrrigationSystem(user: string, irrigationSystem: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public addIrrigationSystem(user: string, irrigationSystem: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling addIrrigationSystem.');
+        }
+
+        if (irrigationSystem === null || irrigationSystem === undefined) {
+            throw new Error('Required parameter irrigationSystem was null or undefined when calling addIrrigationSystem.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<User>('post',`${this.basePath}/user/${encodeURIComponent(String(user))}/irrigationSystems/${encodeURIComponent(String(irrigationSystem))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -103,6 +156,59 @@ export class UserService {
         return this.httpClient.request<User>('post',`${this.basePath}/user`,
             {
                 body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param user 
+     * @param irrigationSystem 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteIrrigationSystem(user: string, irrigationSystem: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public deleteIrrigationSystem(user: string, irrigationSystem: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public deleteIrrigationSystem(user: string, irrigationSystem: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public deleteIrrigationSystem(user: string, irrigationSystem: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling deleteIrrigationSystem.');
+        }
+
+        if (irrigationSystem === null || irrigationSystem === undefined) {
+            throw new Error('Required parameter irrigationSystem was null or undefined when calling deleteIrrigationSystem.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<User>('delete',`${this.basePath}/user/${encodeURIComponent(String(user))}/irrigationSystems/${encodeURIComponent(String(irrigationSystem))}`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -200,17 +306,17 @@ export class UserService {
     /**
      * 
      * 
-     * @param id 
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getById(id: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public getById(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public getById(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public getById(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getById(user: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public getById(user: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public getById(user: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public getById(user: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getById.');
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling getById.');
         }
 
         let headers = this.defaultHeaders;
@@ -235,7 +341,7 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<User>('get',`${this.basePath}/user/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<User>('get',`${this.basePath}/user/${encodeURIComponent(String(user))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -249,21 +355,21 @@ export class UserService {
      * 
      * 
      * @param body 
-     * @param id 
+     * @param user 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public update(body: UpdateUserDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public update(body: UpdateUserDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public update(body: UpdateUserDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public update(body: UpdateUserDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public update(body: UpdateUserDTO, user: string, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public update(body: UpdateUserDTO, user: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public update(body: UpdateUserDTO, user: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public update(body: UpdateUserDTO, user: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling update.');
         }
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update.');
+        if (user === null || user === undefined) {
+            throw new Error('Required parameter user was null or undefined when calling update.');
         }
 
         let headers = this.defaultHeaders;
@@ -293,7 +399,7 @@ export class UserService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<User>('put',`${this.basePath}/user/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<User>('post',`${this.basePath}/user/${encodeURIComponent(String(user))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

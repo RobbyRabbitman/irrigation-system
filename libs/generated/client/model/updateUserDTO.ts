@@ -14,7 +14,6 @@ export interface UpdateUserDTO {
     username?: string;
     password?: string;
     admin?: boolean;
-    irrigationSystems?: Array<string>;
     jwt?: string;
     authenticated?: boolean;
 }

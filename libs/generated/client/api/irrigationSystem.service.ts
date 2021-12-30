@@ -18,7 +18,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { IrrigationSystem } from '../model/irrigationSystem';
-import { UpdateIrrigationSystemDTO } from '../model/updateIrrigationSystemDTO';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -59,22 +58,22 @@ export class IrrigationSystemService {
     /**
      * 
      * 
-     * @param body 
-     * @param id 
+     * @param irrigationSystem 
+     * @param pump 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'body', reportProgress?: boolean): Observable<IrrigationSystem>;
-    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IrrigationSystem>>;
-    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IrrigationSystem>>;
-    public addPumps(body: UpdateIrrigationSystemDTO, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addPump(irrigationSystem: string, pump: string, observe?: 'body', reportProgress?: boolean): Observable<IrrigationSystem>;
+    public addPump(irrigationSystem: string, pump: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IrrigationSystem>>;
+    public addPump(irrigationSystem: string, pump: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IrrigationSystem>>;
+    public addPump(irrigationSystem: string, pump: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling addPumps.');
+        if (irrigationSystem === null || irrigationSystem === undefined) {
+            throw new Error('Required parameter irrigationSystem was null or undefined when calling addPump.');
         }
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling addPumps.');
+        if (pump === null || pump === undefined) {
+            throw new Error('Required parameter pump was null or undefined when calling addPump.');
         }
 
         let headers = this.defaultHeaders;
@@ -97,16 +96,63 @@ export class IrrigationSystemService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        return this.httpClient.request<IrrigationSystem>('post',`${this.basePath}/irrigationSystem/${encodeURIComponent(String(irrigationSystem))}/pumps/${encodeURIComponent(String(pump))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param irrigationSystem 
+     * @param pump 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deletePump(irrigationSystem: string, pump: string, observe?: 'body', reportProgress?: boolean): Observable<IrrigationSystem>;
+    public deletePump(irrigationSystem: string, pump: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IrrigationSystem>>;
+    public deletePump(irrigationSystem: string, pump: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IrrigationSystem>>;
+    public deletePump(irrigationSystem: string, pump: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (irrigationSystem === null || irrigationSystem === undefined) {
+            throw new Error('Required parameter irrigationSystem was null or undefined when calling deletePump.');
         }
 
-        return this.httpClient.request<IrrigationSystem>('put',`${this.basePath}/irrigation-system/${encodeURIComponent(String(id))}`,
+        if (pump === null || pump === undefined) {
+            throw new Error('Required parameter pump was null or undefined when calling deletePump.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (bearer) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<IrrigationSystem>('delete',`${this.basePath}/irrigationSystem/${encodeURIComponent(String(irrigationSystem))}/pumps/${encodeURIComponent(String(pump))}`,
             {
-                body: body,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -148,7 +194,7 @@ export class IrrigationSystemService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<IrrigationSystem>>('get',`${this.basePath}/irrigation-system/all`,
+        return this.httpClient.request<Array<IrrigationSystem>>('get',`${this.basePath}/irrigationSystem/all`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -161,17 +207,17 @@ export class IrrigationSystemService {
     /**
      * 
      * 
-     * @param id 
+     * @param irrigationSystem 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getIrrigationSystem(id: string, observe?: 'body', reportProgress?: boolean): Observable<Array<IrrigationSystem>>;
-    public getIrrigationSystem(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<IrrigationSystem>>>;
-    public getIrrigationSystem(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<IrrigationSystem>>>;
-    public getIrrigationSystem(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getIrrigationSystem(irrigationSystem: string, observe?: 'body', reportProgress?: boolean): Observable<Array<IrrigationSystem>>;
+    public getIrrigationSystem(irrigationSystem: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<IrrigationSystem>>>;
+    public getIrrigationSystem(irrigationSystem: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<IrrigationSystem>>>;
+    public getIrrigationSystem(irrigationSystem: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getIrrigationSystem.');
+        if (irrigationSystem === null || irrigationSystem === undefined) {
+            throw new Error('Required parameter irrigationSystem was null or undefined when calling getIrrigationSystem.');
         }
 
         let headers = this.defaultHeaders;
@@ -196,7 +242,7 @@ export class IrrigationSystemService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<IrrigationSystem>>('get',`${this.basePath}/irrigation-system/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Array<IrrigationSystem>>('get',`${this.basePath}/irrigationSystem/${encodeURIComponent(String(irrigationSystem))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
