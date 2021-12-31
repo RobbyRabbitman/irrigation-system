@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UpdateUserDTO, User } from '@irrigation/generated/client';
 import { StoreService } from '@irrigation/shared/store';
@@ -9,6 +9,7 @@ import { combineLatest, filter, map, Observable, startWith } from 'rxjs';
   selector: 'irrigation-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AdminComponent implements OnInit {
   public searchControl = new FormControl();

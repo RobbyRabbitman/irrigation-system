@@ -1,35 +1,44 @@
-<section class="search mat-elevation-z2">
-  <mat-form-field>
-    <mat-label> Search </mat-label>
-    <input
-      autocomplete="off"
-      matInput
-      color="primary"
-      [formControl]="searchControl"
-    />
-    <button
-      matSuffix
-      mat-icon-button
-      *ngIf="searchControl.value"
-      (click)="searchControl.setValue(searchControlDefaulValue)"
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
-  </mat-form-field>
-</section>
-<section class="search-result">
-  <mat-card *ngFor="let user of _users$ | async">
-    <mat-card-header>
-      <mat-card-title>
-        {{ user.username }}
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <irrigation-edit-user
-        [user]="user"
-        (edit)="_onEdit(user.id, $event)"
-        [irrigationSystems]="store.irrigationSystems$ | async"
-      ></irrigation-edit-user>
-    </mat-card-content>
-  </mat-card>
-</section>
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab label="users">
+    <ng-template matTabContent>
+      <div class="Users">
+        <section class="search mat-elevation-z2">
+          <mat-form-field>
+            <mat-label> Search </mat-label>
+            <input
+              autocomplete="off"
+              matInput
+              color="primary"
+              [formControl]="searchControl"
+            />
+            <button
+              matSuffix
+              mat-icon-button
+              *ngIf="searchControl.value"
+              (click)="searchControl.setValue(searchControlDefaulValue)"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </mat-form-field>
+        </section>
+        <section class="search-result">
+          <mat-card *ngFor="let user of _users$ | async">
+            <mat-card-header>
+              <mat-card-title>
+                {{ user.username }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <irrigation-edit-user
+                [user]="user"
+                (edit)="_onEdit(user.id, $event)"
+                [irrigationSystems]="store.irrigationSystems$ | async"
+              ></irrigation-edit-user>
+            </mat-card-content>
+          </mat-card>
+        </section>
+      </div>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Irrigation Systems"> </mat-tab>
+</mat-tab-group>

@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatIconModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatTabsModule,
     MatListModule,
   ],
   declarations: [AdminComponent, EditUserComponent],
