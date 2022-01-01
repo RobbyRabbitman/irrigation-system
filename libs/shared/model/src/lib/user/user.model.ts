@@ -13,8 +13,9 @@ import {
   IrrigationSystem,
   IrrigationSystemName,
 } from '../irrigation-system/irrigation-system.model';
+import { SCHEMA_OPTIONS } from '../schema.options';
 
-@Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true } })
+@Schema(SCHEMA_OPTIONS)
 export class User extends Identifyable {
   @ApiProperty({ required: true })
   @IsString()

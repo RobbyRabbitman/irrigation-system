@@ -3,8 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';
 import { Identifyable } from '../identifyable.model';
 import { PumpName, Pump } from '../pump/pump.model';
+import { SCHEMA_OPTIONS } from '../schema.options';
 
-@Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true } })
+@Schema(SCHEMA_OPTIONS)
 export class IrrigationSystem extends Identifyable {
   @ApiProperty({ required: true })
   @Prop()

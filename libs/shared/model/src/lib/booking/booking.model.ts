@@ -4,8 +4,9 @@ import { UserName, User } from '../user/user.model';
 import { Identifyable } from '../identifyable.model';
 import { Pump, PumpName } from '../pump/pump.model';
 import { ApiProperty } from '@nestjs/swagger';
+import { SCHEMA_OPTIONS } from '../schema.options';
 
-@Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true } })
+@Schema(SCHEMA_OPTIONS)
 export class Booking extends Identifyable {
   @ApiProperty({ required: true })
   @Prop()
