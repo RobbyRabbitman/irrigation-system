@@ -1,22 +1,47 @@
 <ng-container *ngIf="irrigationSystem$ | async as irrigationSystem">
   <h1>{{ irrigationSystem.name }}</h1>
-  <mat-form-field>
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [formGroup]="_range" [rangePicker]="picker">
-      <input
-        matStartDate
-        [formControlName]="_range_from_control"
-        placeholder="Start date"
-      />
-      <input
-        matEndDate
-        [formControlName]="_range_to_control"
-        placeholder="End date"
-      />
-    </mat-date-range-input>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-  </mat-form-field>
+  <form [formGroup]="_range">
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input
+        [formGroupName]="_range_date"
+        [rangePicker]="picker"
+      >
+        <input
+          matStartDate
+          [formControlName]="_range_from_control"
+          placeholder="Start date"
+        />
+        <input
+          matEndDate
+          [formControlName]="_range_to_control"
+          placeholder="End date"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <div class="range-hours">
+      <mat-form-field>
+        <mat-label>From hour</mat-label>
+        <mat-select [formControlName]="_range_from_hour_control">
+          <mat-option *ngFor="let hour of _hours" [value]="hour">
+            {{ hour }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>To hour</mat-label>
+        <mat-select [formControlName]="_range_to_hour_control">
+          <mat-option *ngFor="let hour of _hours" [value]="hour">
+            {{ hour }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
 
   <irrigation-irrigation-timeline
     *ngIf="timelineData$ | async as timelineData"

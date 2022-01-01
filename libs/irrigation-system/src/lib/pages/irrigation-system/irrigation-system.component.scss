@@ -1,10 +1,19 @@
-:host,
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-:host {
+irrigation-irrigation-system {
   padding: 1rem;
+  .range-hours {
+    display: flex;
+    gap: 1rem;
+    > mat-form-field {
+      flex: 1;
+      .mat-form-field-infix {
+        width: unset;
+      }
+    }
+  }
+  &,
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

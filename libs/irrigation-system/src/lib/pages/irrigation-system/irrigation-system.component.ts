@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   Booking,
@@ -36,6 +36,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   selector: 'irrigation-irrigation-system',
   templateUrl: './irrigation-system.component.html',
   styleUrls: ['./irrigation-system.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class IrrigationSystemComponent implements OnInit {
   public static readonly QUERY_PARAM_ID = 'id';
@@ -57,15 +58,29 @@ export class IrrigationSystemComponent implements OnInit {
   );
   public _hours = [...Array(24).keys()];
 
+  public _range_from_defaultValue = this._hours[0];
+  public _range_to_defaultValue = this._hours.slice(-1)[0];
+
   public readonly _range_from_control = 'range_start';
   public readonly _range_to_control = 'range_end';
+  public readonly _range_date = 'date';
+  public readonly _range_from_hour_control = 'range_start_hour';
+  public readonly _range_to_hour_control = 'range_end_hour';
   public readonly _range = new FormGroup({
-    [this._range_from_control]: new FormControl(
-      this._range_from_control_startValue
+    [this._range_date]: new FormGroup({
+      [this._range_from_control]: new FormControl(
+        this._range_from_control_startValue,
+        Validators.required
+      ),
+      [this._range_to_control]: new FormControl(
+        this._range_to_control_startValue,
+        Validators.required
+      ),
+    }),
+    [this._range_from_hour_control]: new FormControl(
+      this._range_from_defaultValue
     ),
-    [this._range_to_control]: new FormControl(
-      this._range_to_control_startValue
-    ),
+    [this._range_to_hour_control]: new FormControl(this._range_to_defaultValue),
   });
 
   public readonly _booking_from_control = 'booking_from_date';
@@ -118,16 +133,9 @@ export class IrrigationSystemComponent implements OnInit {
     );
 
     this.timelineData$ = this._range.valueChanges.pipe(
-      startWith({
-        [this._range_from_control]: this._range_from_control_startValue,
-        [this._range_to_control]: this._range_to_control_startValue,
-      }),
-      filter(
-        (value) =>
-          isNonNull(value[this._range_from_control]) &&
-          isNonNull(value[this._range_to_control])
-      ),
-      switchMap((value) =>
+      startWith(this._range.value),
+      map((value) => this._transformRangeFormValue(value)),
+      switchMap(({ from, to }) =>
         this.irrigationSystem$.pipe(
           map((irrigationSystem) => irrigationSystem.pumps),
           filter(isNonNull),
@@ -135,24 +143,40 @@ export class IrrigationSystemComponent implements OnInit {
             forkJoin(
               pumps.map((pump) =>
                 this.bookingService
-                  .inPeriod(
-                    pump.id,
-                    (value[this._range_from_control] as Date).getTime(),
-                    addToDate(value[this._range_to_control], 0, 0, 1).getTime()
-                  )
+                  .inPeriod(pump.id, from.getTime(), to.getTime())
                   .pipe(map((bookings) => ({ ...pump, bookings })))
               )
             )
           ),
           map((pumps) => ({
-            from: value[this._range_from_control],
-            to: addToDate(value[this._range_to_control], 0, 0, 1),
+            from,
+            to,
             pumps,
           }))
         )
       ),
       shareReplay(1)
     );
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _transformRangeFormValue(value: any): { from: Date; to: Date } {
+    return {
+      from: addToDate(
+        value[this._range_from_control],
+        0,
+        0,
+        0,
+        value[this._range_from_hour_control]
+      ),
+      to: addToDate(
+        value[this._range_to_control],
+        0,
+        0,
+        0,
+        value[this._range_to_hour_control]
+      ),
+    };
   }
 
   public _deleteBooking(): void {
