@@ -31,6 +31,7 @@ import {
 import { ROUTE_IRRIGATION_SYSTEM_OVERVIEW } from '../../routes/routes';
 import { TimelineData } from '../../components/irrigation-timeline/irrigation-timeline.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ErrorService } from '@irrigation/shared/error';
 
 @Component({
   selector: 'irrigation-irrigation-system',
@@ -109,6 +110,7 @@ export class IrrigationSystemComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly store: StoreService,
     private readonly router: Router,
+    private readonly errorService: ErrorService,
     private readonly bookingService: BookingService
   ) {}
 
@@ -229,6 +231,7 @@ export class IrrigationSystemComponent implements OnInit {
         )
         .subscribe({
           next: () => this._refreshTimelineData(),
+          error: (error) => this.errorService.showErrorInDialog(error),
         });
   }
 
