@@ -71,6 +71,13 @@
       </mat-select>
     </mat-form-field>
     <!-- submit button -->
-    <button color="primary" mat-raised-button type="submit">Add</button>
+    <button
+      color="primary"
+      [disabled]="isAdding"
+      mat-raised-button
+      type="submit"
+    >
+      Add
+    </button>
   </form>
 </ng-container>

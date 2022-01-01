@@ -88,6 +88,8 @@ export class IrrigationSystemComponent implements OnInit {
     [this._booking_to_time_control]: new FormControl(null, Validators.required),
   });
 
+  public isAdding = false;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly store: StoreService,
@@ -161,6 +163,7 @@ export class IrrigationSystemComponent implements OnInit {
   }
 
   public _addBooking(): void {
+    this.isAdding = true;
     if (this._booking.valid)
       combineLatest([
         this.store.user$.pipe(filter(isNonNull)),
@@ -197,7 +200,8 @@ export class IrrigationSystemComponent implements OnInit {
               by: user.id,
               pump: this._getBestPump(from, to, timelineData).id,
             })
-          )
+          ),
+          finalize(() => (this.isAdding = false))
         )
         .subscribe({
           next: () => this._refreshTimelineData(),
