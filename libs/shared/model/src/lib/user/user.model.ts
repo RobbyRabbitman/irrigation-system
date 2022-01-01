@@ -21,7 +21,7 @@ export class User extends Identifyable {
   @IsNotEmpty()
   @Prop({ unique: true, required: true, index: true })
   username!: string;
-  @Prop({ required: true })
+  @Prop({ required: true, select: false })
   password!: string;
   @ApiProperty({ required: true })
   @IsBoolean()

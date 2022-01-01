@@ -18,12 +18,18 @@ export class UserService {
     private readonly model: Model<UserDocument>
   ) {}
 
+  /**
+   *
+   * @param username
+   * @returns user with password...care
+   */
   public getOne(username: string): Observable<User | undefined> {
     return from(
       this.model
         .findOne()
         .where('username')
         .equals(username)
+        .select('+password')
         .populate('irrigationSystems')
         .populate({
           path: 'irrigationSystems',

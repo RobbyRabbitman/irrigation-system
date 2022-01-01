@@ -4,7 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@irrigation/shared/model';
 import { Payload } from './Payload';
 import { UserService } from '../user/user.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
+import { isNonNull } from '@irrigation/shared/util';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,6 +18,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: Payload): Promise<User> {
-    return firstValueFrom(this.user.getOne(payload.username));
+    return firstValueFrom(
+      this.user.getOne(payload.username).pipe(
+        map((user) => {
+          if (isNonNull(user)) delete user.password;
+          return user;
+        })
+      )
+    );
   }
 }
