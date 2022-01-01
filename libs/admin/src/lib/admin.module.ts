@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTabsModule } from '@angular/material/tabs';
+import { EditIrrigationSystemComponent } from './components/edit-irrigation-system/edit-irrigation-system.component';
 
 @NgModule({
   imports: [
@@ -32,6 +33,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatListModule,
   ],
-  declarations: [AdminComponent, EditUserComponent],
+  declarations: [AdminComponent, EditUserComponent, EditIrrigationSystemComponent],
 })
 export class AdminModule {}

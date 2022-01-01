@@ -1,5 +1,7 @@
 irrigation-admin {
   .users,
+  .irrigation-systems-tab,
+  .irrigation-systems,
   .search,
   .search-result {
     display: flex;
@@ -21,7 +23,8 @@ irrigation-admin {
     z-index: 2;
   }
 
-  .search-result {
+  .search-result,
+  .irrigation-systems {
     padding: 1rem;
     gap: 1rem;
   }

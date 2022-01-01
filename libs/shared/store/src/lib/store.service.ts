@@ -12,15 +12,17 @@ import {
 import {
   AuthService,
   Configuration,
+  CreatePumpDTO,
   CreateUserDTO,
   IrrigationSystem,
   IrrigationSystemService,
   Login,
+  PumpService,
   UpdateUserDTO,
   User,
   UserService,
 } from '@irrigation/generated/client';
-import { isNonNull, throwIfNullish } from '@irrigation/shared/util';
+import { isNonNull, isNullish, throwIfNullish } from '@irrigation/shared/util';
 import { LocalStorageService } from './local-storage.service';
 @Injectable()
 export class StoreService {
@@ -41,6 +43,7 @@ export class StoreService {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly irrigationSystemService: IrrigationSystemService,
+    private readonly pumpService: PumpService,
     private readonly localstorage: LocalStorageService,
     public readonly config: Configuration
   ) {
@@ -86,6 +89,31 @@ export class StoreService {
       .pipe(map((user) => this.updateUserState(user)));
   }
 
+  public dispatchDeletePumpFromIrrigationSystem(
+    irrigationSystem: string,
+    pump: string
+  ): Observable<void> {
+    return this.irrigationSystemService
+      .deletePump(irrigationSystem, pump)
+      .pipe(
+        map((irrigationSystems) =>
+          this.updateIrrigationState(irrigationSystems)
+        )
+      );
+  }
+
+  public dispatchAddNewPumpToIrrigationSystem(
+    irrigationSystem: string,
+    pump: CreatePumpDTO
+  ): Observable<void> {
+    return this.pumpService.create(pump).pipe(
+      switchMap(({ id }) =>
+        this.irrigationSystemService.addPump(irrigationSystem, id)
+      ),
+      map((irrigationSystems) => this.updateIrrigationState(irrigationSystems))
+    );
+  }
+
   public dispatchAddIrrigationSystemToUser(
     user: string,
     irrigationSystem: string
@@ -112,6 +140,29 @@ export class StoreService {
       if (userIndex >= 0) {
         users[userIndex] = newUser;
         this._users$.next([...users]);
+      }
+    }
+  }
+
+  private updateIrrigationState(newIrrigationSystem: IrrigationSystem): void {
+    if (
+      isNonNull(
+        this._user$.value?.irrigationSystems?.find(
+          (x) => x.id === newIrrigationSystem.id
+        )
+      )
+    )
+      this.dispatchGetUser().subscribe();
+    if (isNullish(this._irrigationSystems$.value))
+      this._irrigationSystems$.next([newIrrigationSystem]);
+    else {
+      const irrigationSystems = this._irrigationSystems$.value;
+      const index = irrigationSystems.findIndex(
+        (x) => x.id === newIrrigationSystem.id
+      );
+      if (index >= 0) {
+        irrigationSystems[index] = newIrrigationSystem;
+        this._irrigationSystems$.next([...irrigationSystems]);
       }
     }
   }

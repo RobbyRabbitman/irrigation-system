@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { UpdateUserDTO, User } from '@irrigation/generated/client';
+import {
+  CreatePumpDTO,
+  IrrigationSystem,
+  Pump,
+  UpdateUserDTO,
+  User,
+} from '@irrigation/generated/client';
 import { StoreService } from '@irrigation/shared/store';
 import { isNonNull } from '@irrigation/shared/util';
 import { combineLatest, filter, map, Observable, startWith } from 'rxjs';
@@ -39,5 +45,19 @@ export class AdminComponent implements OnInit {
 
   public _onEdit(id: string, dto: UpdateUserDTO): void {
     this.store.dispatchUpdateUser(id, dto).subscribe();
+  }
+
+  public _onDeletePump(irrigationSystem: IrrigationSystem, pump: Pump): void {
+    this.store
+      .dispatchDeletePumpFromIrrigationSystem(irrigationSystem.id, pump.id)
+      .subscribe();
+  }
+  public _onAddPump(
+    irrigationSystem: IrrigationSystem,
+    pump: CreatePumpDTO
+  ): void {
+    this.store
+      .dispatchAddNewPumpToIrrigationSystem(irrigationSystem.id, pump)
+      .subscribe();
   }
 }

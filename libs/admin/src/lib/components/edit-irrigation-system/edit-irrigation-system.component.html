@@ -1,0 +1,25 @@
+<ng-container *ngIf="irrigationSystem">
+  <form [formGroup]="addPumpForm" (ngSubmit)="_onSubmit()">
+    <mat-form-field>
+      <mat-label>Add Pump</mat-label>
+      <input
+        autocomplete="off"
+        matInput
+        type="text"
+        [formControlName]="addPumpForm_name"
+      />
+    </mat-form-field>
+    <button type="submit" mat-icon-button color="accent">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </form>
+  <mat-list>
+    <mat-list-item *ngFor="let pump of irrigationSystem.pumps">
+      <span matLine>{{ pump.name }}</span>
+      <span matLine>{{ pump.id }}</span>
+      <button mat-icon-button color="warn" (click)="this.deletePump.emit(pump)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</ng-container>
