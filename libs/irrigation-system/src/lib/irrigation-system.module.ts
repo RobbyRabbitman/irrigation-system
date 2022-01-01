@@ -21,6 +21,7 @@ import {
   NgxMatTimepickerModule,
 } from '@angular-material-components/datetime-picker';
 import { MatSelectModule } from '@angular/material/select';
+import { BookingCardComponent } from './components/booking-card/booking-card.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -43,6 +44,7 @@ import { MatSelectModule } from '@angular/material/select';
     IrrigationSystemCardComponent,
     IrrigationSystemComponent,
     IrrigationTimelineComponent,
+    BookingCardComponent,
   ],
 })
 export class IrrigationSystemModule {}
