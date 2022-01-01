@@ -134,7 +134,27 @@ export class IrrigationSystemComponent implements OnInit {
 
     this.timelineData$ = this._range.valueChanges.pipe(
       startWith(this._range.value),
-      map((value) => this._transformRangeFormValue(value)),
+      filter(
+        (value) =>
+          isNonNull(value[this._range_date][this._range_from_control]) &&
+          isNonNull(value[this._range_date][this._range_to_control])
+      ),
+      map((value) => ({
+        from: addToDate(
+          value[this._range_date][this._range_from_control],
+          0,
+          0,
+          0,
+          value[this._range_from_hour_control]
+        ),
+        to: addToDate(
+          value[this._range_date][this._range_to_control],
+          0,
+          0,
+          0,
+          value[this._range_to_hour_control]
+        ),
+      })),
       switchMap(({ from, to }) =>
         this.irrigationSystem$.pipe(
           map((irrigationSystem) => irrigationSystem.pumps),
@@ -157,26 +177,6 @@ export class IrrigationSystemComponent implements OnInit {
       ),
       shareReplay(1)
     );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _transformRangeFormValue(value: any): { from: Date; to: Date } {
-    return {
-      from: addToDate(
-        value[this._range_from_control],
-        0,
-        0,
-        0,
-        value[this._range_from_hour_control]
-      ),
-      to: addToDate(
-        value[this._range_to_control],
-        0,
-        0,
-        0,
-        value[this._range_to_hour_control]
-      ),
-    };
   }
 
   public _deleteBooking(): void {
