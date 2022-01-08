@@ -1,0 +1,16 @@
+irrigation-date-time-range {
+  .date-time-control {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    > .date-control {
+      flex: 2;
+    }
+    > .time-control {
+      flex: 1;
+    }
+  }
+  .mat-form-field-infix {
+    width: unset;
+  }
+}

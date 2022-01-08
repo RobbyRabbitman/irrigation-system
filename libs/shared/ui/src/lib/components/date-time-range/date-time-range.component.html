@@ -1,0 +1,47 @@
+<form [formGroup]="form">
+  <section class="date-time-control">
+    <mat-form-field class="date-control">
+      <mat-label>Start Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startDate"
+        [formControlName]="startDateControlName"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startDate"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #startDate></mat-datepicker>
+    </mat-form-field>
+    <span>:</span>
+    <mat-form-field class="time-control">
+      <mat-label>Hours</mat-label>
+      <mat-select [formControlName]="startTimeControlName">
+        <mat-option *ngFor="let hour of _hours" [value]="hour">
+          {{ hour }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+  <section class="date-time-control">
+    <mat-form-field class="date-control">
+      <mat-label>End Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endDate"
+        [formControlName]="endDateControlName"
+      />
+      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+      <mat-datepicker #endDate></mat-datepicker>
+    </mat-form-field>
+    <span>:</span>
+    <mat-form-field class="time-control">
+      <mat-label>Hours</mat-label>
+      <mat-select [formControlName]="endTimeControlName">
+        <mat-option *ngFor="let hour of _hours" [value]="hour">
+          {{ hour }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+</form>

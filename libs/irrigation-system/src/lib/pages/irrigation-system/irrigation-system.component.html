@@ -1,47 +1,8 @@
 <ng-container *ngIf="irrigationSystem$ | async as irrigationSystem">
   <h1>{{ irrigationSystem.name }}</h1>
-  <form [formGroup]="_range">
-    <mat-form-field>
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input
-        [formGroupName]="_range_date"
-        [rangePicker]="picker"
-      >
-        <input
-          matStartDate
-          [formControlName]="_range_from_control"
-          placeholder="Start date"
-        />
-        <input
-          matEndDate
-          [formControlName]="_range_to_control"
-          placeholder="End date"
-        />
-      </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
 
-    <div class="range-hours">
-      <mat-form-field>
-        <mat-label>From hour</mat-label>
-        <mat-select [formControlName]="_range_from_hour_control">
-          <mat-option *ngFor="let hour of _hours" [value]="hour">
-            {{ hour }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>To hour</mat-label>
-        <mat-select [formControlName]="_range_to_hour_control">
-          <mat-option *ngFor="let hour of _hours" [value]="hour">
-            {{ hour }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </form>
+  <irrigation-date-time-range [value]="dateRangeDefaultValue" #dateRange>
+  </irrigation-date-time-range>
 
   <irrigation-irrigation-timeline
     *ngIf="timelineData$ | async as timelineData"
@@ -63,54 +24,17 @@
       <mat-icon>delete</mat-icon>
     </button>
   </irrigation-booking-card>
-  <!-- add booking form -->
-  <form [formGroup]="_booking" (ngSubmit)="_addBooking()">
-    <!-- from -->
-    <mat-form-field>
-      <mat-label>Choose a date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="from"
-        [formControlName]="_booking_from_control"
-      />
-      <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
-      <mat-datepicker #from></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Choose hour</mat-label>
-      <mat-select [formControlName]="_booking_from_time_control">
-        <mat-option *ngFor="let hour of _hours" [value]="hour">
-          {{ hour }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- to -->
-    <mat-form-field>
-      <mat-label>Choose a date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="to"
-        [formControlName]="_booking_to_control"
-      />
-      <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
-      <mat-datepicker #to></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Choose hour</mat-label>
-      <mat-select [formControlName]="_booking_to_time_control">
-        <mat-option *ngFor="let hour of _hours" [value]="hour">
-          {{ hour }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- submit button -->
-    <button
-      color="primary"
-      [disabled]="isAdding"
-      mat-raised-button
-      type="submit"
-    >
-      Add
-    </button>
-  </form>
+
+  <irrigation-date-time-range
+    #addDateRange
+    [value]="adddateRangeDefaultValue"
+  ></irrigation-date-time-range>
+  <button
+    color="accent"
+    [disabled]="isAdding || !addDateRange.form.valid"
+    mat-raised-button
+    (click)="_onAddBooking(addDateRange.value)"
+  >
+    Add
+  </button>
 </ng-container>

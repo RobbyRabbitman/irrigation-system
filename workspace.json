@@ -9,6 +9,7 @@
     "shared-error": "libs/shared/error",
     "shared-model": "libs/shared/model",
     "shared-store": "libs/shared/store",
+    "shared-ui": "libs/shared/ui",
     "shared-util": "libs/shared/util",
     "shell": "libs/shell",
     "web": "apps/web",

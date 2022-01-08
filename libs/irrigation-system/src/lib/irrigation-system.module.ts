@@ -22,9 +22,11 @@ import {
 } from '@angular-material-components/datetime-picker';
 import { MatSelectModule } from '@angular/material/select';
 import { BookingCardComponent } from './components/booking-card/booking-card.component';
+import { UiModule } from '@irrigation/shared/ui';
 @NgModule({
   imports: [
     CommonModule,
+    UiModule,
     MatIconModule,
     IrrigationSystemRoutingModule,
     MatCardModule,
