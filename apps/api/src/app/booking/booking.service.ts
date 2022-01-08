@@ -15,7 +15,7 @@ export class BookingService {
   ) {}
 
   public findOneById(id: string): Observable<Booking> {
-    return rxjsFrom(this.model.findById(id));
+    return rxjsFrom(this.model.findById(id).populate(['by', 'pump']));
   }
 
   public create(dto: CreateBookingDTO): Observable<Booking> {
