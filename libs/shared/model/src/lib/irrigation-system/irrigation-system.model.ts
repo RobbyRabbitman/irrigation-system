@@ -10,8 +10,12 @@ export class IrrigationSystem extends Identifyable {
   @ApiProperty({ required: true })
   @Prop()
   name!: string;
-  @ApiProperty({ required: false, isArray: true, type: Pump })
-  @Prop({ type: [{ type: Types.ObjectId, ref: PumpName }] })
+  @ApiProperty({
+    required: false,
+    isArray: true,
+    type: Pump,
+  })
+  @Prop({ type: [{ type: Types.ObjectId, ref: PumpName }], autopopulate: true })
   pumps?: Pump[];
 }
 

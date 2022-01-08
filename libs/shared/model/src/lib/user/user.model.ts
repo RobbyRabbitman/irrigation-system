@@ -34,6 +34,7 @@ export class User extends Identifyable {
   @IsOptional()
   @Prop({
     type: [{ type: Types.ObjectId, ref: IrrigationSystemName }],
+    autopopulate: true,
   })
   irrigationSystems?: IrrigationSystem[];
   @ApiProperty({ required: false })

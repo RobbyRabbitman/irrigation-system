@@ -15,10 +15,10 @@ export class Booking extends Identifyable {
   @Prop()
   to!: number;
   @ApiProperty({ required: true })
-  @Prop({ type: Types.ObjectId, ref: UserName })
+  @Prop({ type: Types.ObjectId, ref: UserName, autopopulate: true })
   by!: User;
   @ApiProperty({ required: true })
-  @Prop({ type: Types.ObjectId, ref: PumpName })
+  @Prop({ type: Types.ObjectId, ref: PumpName, autopopulate: true })
   pump!: Pump;
 }
 

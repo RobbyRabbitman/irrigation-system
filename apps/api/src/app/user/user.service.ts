@@ -4,7 +4,6 @@ import {
   UpdateUserDTO,
   UserName,
   CreateUserDTO,
-  Pump,
 } from '@irrigation/shared/model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -30,31 +29,11 @@ export class UserService {
         .where('username')
         .equals(username)
         .select('+password')
-        .populate('irrigationSystems')
-        .populate({
-          path: 'irrigationSystems',
-          populate: {
-            path: 'pumps',
-            model: Pump.name,
-          },
-        })
     );
   }
 
   public findAll(): Observable<User[]> {
-    return from(
-      this.model
-        .find()
-        .populate('irrigationSystems')
-        .populate({
-          path: 'irrigationSystems',
-          populate: {
-            path: 'pumps',
-            model: Pump.name,
-          },
-        })
-        .exec()
-    );
+    return from(this.model.find().exec());
   }
 
   public create(dto: CreateUserDTO): Observable<User> {
@@ -62,38 +41,18 @@ export class UserService {
   }
 
   public findOneById(id: string): Observable<User | undefined> {
-    return from(
-      this.model
-        .findById(id)
-        .populate('irrigationSystems')
-        .populate({
-          path: 'irrigationSystems',
-          populate: {
-            path: 'pumps',
-            model: Pump.name,
-          },
-        })
-    );
+    return from(this.model.findById(id));
   }
 
   public update(id: string, dto: UpdateUserDTO) {
     return from(
-      this.model
-        .findByIdAndUpdate(
-          id,
-          {
-            ...removeNullish(dto),
-          },
-          { new: true }
-        )
-        .populate('irrigationSystems')
-        .populate({
-          path: 'irrigationSystems',
-          populate: {
-            path: 'pumps',
-            model: Pump.name,
-          },
-        })
+      this.model.findByIdAndUpdate(
+        id,
+        {
+          ...removeNullish(dto),
+        },
+        { new: true }
+      )
     );
   }
 
@@ -103,22 +62,13 @@ export class UserService {
     op: '$addToSet' | '$pull'
   ) {
     return from(
-      this.model
-        .findByIdAndUpdate(
-          id,
-          {
-            [op]: { irrigationSystems: irrigationSystem },
-          },
-          { new: true }
-        )
-        .populate('irrigationSystems')
-        .populate({
-          path: 'irrigationSystems',
-          populate: {
-            path: 'pumps',
-            model: Pump.name,
-          },
-        })
+      this.model.findByIdAndUpdate(
+        id,
+        {
+          [op]: { irrigationSystems: irrigationSystem },
+        },
+        { new: true }
+      )
     );
   }
 }

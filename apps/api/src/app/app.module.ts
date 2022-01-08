@@ -8,10 +8,15 @@ import { PumpModule } from './pump/pump.module';
 import { BookingModule } from './booking/booking.module';
 import { AdminGuard } from './guards/admin.guard';
 import { AuthenticatedUserGuard } from './guards/authenticated-user.guard';
-
+import * as mongooseAutoPopulate from 'mongoose-autopopulate';
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO),
+    MongooseModule.forRoot(process.env.MONGO, {
+      connectionFactory: (connection) => {
+        connection.plugin(mongooseAutoPopulate);
+        return connection;
+      },
+    }),
     PumpModule,
     AuthModule,
     UserModule,

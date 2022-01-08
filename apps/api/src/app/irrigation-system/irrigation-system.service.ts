@@ -19,11 +19,11 @@ export class IrrigationSystemService {
   ) {}
 
   public findOne(id: string): Observable<IrrigationSystem> {
-    return from(this.model.findById(id).populate('pumps'));
+    return from(this.model.findById(id));
   }
 
   public findAll(): Observable<IrrigationSystem[]> {
-    return from(this.model.find().populate('pumps').exec());
+    return from(this.model.find().exec());
   }
 
   public createOne(
@@ -37,23 +37,19 @@ export class IrrigationSystemService {
     dto: UpdateIrrigationSystemDTO
   ): Observable<IrrigationSystem> {
     return from(
-      this.model
-        .findByIdAndUpdate(id, { ...removeNullish(dto) }, { new: true })
-        .populate('pumps')
+      this.model.findByIdAndUpdate(id, { ...removeNullish(dto) }, { new: true })
     );
   }
 
   public updatePumps(id: string, pump: string, op: '$addToSet' | '$pull') {
     return from(
-      this.model
-        .findByIdAndUpdate(
-          id,
-          {
-            [op]: { pumps: pump },
-          },
-          { new: true }
-        )
-        .populate('pumps')
+      this.model.findByIdAndUpdate(
+        id,
+        {
+          [op]: { pumps: pump },
+        },
+        { new: true }
+      )
     );
   }
 }
