@@ -1,5 +1,12 @@
 irrigation-irrigation-system {
-  padding: 1rem;
+  .content {
+    padding: 1rem;
+  }
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
   .range-hours {
     display: flex;
     gap: 1rem;
@@ -10,7 +17,7 @@ irrigation-irrigation-system {
       }
     }
   }
-  &,
+  .content,
   form {
     display: flex;
     flex-direction: column;

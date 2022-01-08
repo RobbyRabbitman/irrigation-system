@@ -1,40 +1,44 @@
 <ng-container *ngIf="irrigationSystem$ | async as irrigationSystem">
-  <h1>{{ irrigationSystem.name }}</h1>
+  <mat-toolbar class="header" color="primary">
+    <span>{{ irrigationSystem.name }}</span>
+  </mat-toolbar>
 
-  <irrigation-date-time-range [value]="dateRangeDefaultValue" #dateRange>
-  </irrigation-date-time-range>
+  <section class="content">
+    <irrigation-date-time-range [value]="dateRangeDefaultValue" #dateRange>
+    </irrigation-date-time-range>
 
-  <irrigation-irrigation-timeline
-    *ngIf="timelineData$ | async as timelineData"
-    [data]="timelineData"
-    (selected)="selectedBooking = $event"
-  >
-  </irrigation-irrigation-timeline>
-  <irrigation-booking-card
-    *ngIf="selectedBooking"
-    #card
-    [booking]="selectedBooking"
-  >
-    <button
-      [slot]="card.ACTIONS_SLOT"
-      mat-icon-button
-      color="warn"
-      (click)="_deleteBooking()"
+    <irrigation-irrigation-timeline
+      *ngIf="timelineData$ | async as timelineData"
+      [data]="timelineData"
+      (selected)="selectedBooking = $event"
     >
-      <mat-icon>delete</mat-icon>
-    </button>
-  </irrigation-booking-card>
+    </irrigation-irrigation-timeline>
+    <irrigation-booking-card
+      *ngIf="selectedBooking"
+      #card
+      [booking]="selectedBooking"
+    >
+      <button
+        [slot]="card.ACTIONS_SLOT"
+        mat-icon-button
+        color="warn"
+        (click)="_deleteBooking()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </irrigation-booking-card>
 
-  <irrigation-date-time-range
-    #addDateRange
-    [value]="adddateRangeDefaultValue"
-  ></irrigation-date-time-range>
-  <button
-    color="accent"
-    [disabled]="isAdding || !addDateRange.form.valid"
-    mat-raised-button
-    (click)="_onAddBooking(addDateRange.value)"
-  >
-    Add
-  </button>
+    <irrigation-date-time-range
+      #addDateRange
+      [value]="adddateRangeDefaultValue"
+    ></irrigation-date-time-range>
+    <button
+      color="accent"
+      [disabled]="isAdding || !addDateRange.form.valid"
+      mat-raised-button
+      (click)="_onAddBooking(addDateRange.value)"
+    >
+      Add
+    </button>
+  </section>
 </ng-container>

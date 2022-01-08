@@ -23,6 +23,7 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 import { BookingCardComponent } from './components/booking-card/booking-card.component';
 import { UiModule } from '@irrigation/shared/ui';
+import { MatToolbarModule } from '@angular/material/toolbar';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,6 +41,7 @@ import { UiModule } from '@irrigation/shared/ui';
     NgxMatTimepickerModule,
     MatInputModule,
     MatSelectModule,
+    MatToolbarModule,
   ],
   declarations: [
     IrrigationSystemOverviewComponent,
