@@ -7,7 +7,7 @@ import {
   LOCALE_ID,
   Output,
 } from '@angular/core';
-import { Booking, Pump } from '@irrigation/generated/client';
+import { Booking, Pump, User } from '@irrigation/generated/client';
 import { isNonNull, throwIfNullish } from '@irrigation/shared/util';
 import {
   ChartType,
@@ -68,17 +68,17 @@ export class IrrigationTimelineComponent {
             this._bookings.set(index++, booking);
             rows.push([
               pump.name,
-              booking.by.username,
+              this.getUsername(booking.by),
               null,
               this._createTooltip(booking),
               new Date(booking.from),
               new Date(booking.to),
             ]);
             return rows;
-          }, new Array<any>([pump.name, '', 'opacity:0;', '', from, from], [pump.name, '', 'opacity:0;', '', to, to]))
+          }, new Array<Row>([pump.name, '', 'opacity:0;', '', from, from], [pump.name, '', 'opacity:0;', '', to, to]))
         );
         return rows;
-      }, new Array<any>());
+      }, new Array<Row>());
     }
   }
 
@@ -86,9 +86,13 @@ export class IrrigationTimelineComponent {
     console.log(this._bookings.get(throwIfNullish(event.selection[0].row)));
   }
 
+  private getUsername(user: User): string {
+    return user?.username ?? 'unknown';
+  }
+
   private _createTooltip(booking: Booking) {
     return `<div style="padding:5px 5px 5px 5px;font-size: 1rem;">
-            <h3><strong>${booking.by.username}</strong></h3>
+            <h3><strong>${this.getUsername(booking.by)}</strong></h3>
             <p>
             ${formatDate(booking.from, 'HH:mm', this.locale)} - 
             ${formatDate(booking.to, 'HH:mm', this.locale)}
