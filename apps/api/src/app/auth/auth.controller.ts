@@ -6,18 +6,20 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Observable, switchMap } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
+import { PasswordService } from './password.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly passwordService: PasswordService
   ) {}
 
   @ApiOkResponse({ type: User })
@@ -38,6 +40,13 @@ export class AuthController {
   @ApiBody({ type: CreateUserDTO })
   @Post('sign-up')
   public signUp(@Body() dto: CreateUserDTO): Observable<User> {
-    return this.userService.create(dto);
+    return from(this.passwordService.hash(dto.password)).pipe(
+      switchMap((hash) =>
+        this.userService.create({
+          ...dto,
+          password: hash,
+        })
+      )
+    );
   }
 }
