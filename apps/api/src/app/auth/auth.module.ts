@@ -27,7 +27,7 @@ import { PasswordService, PASSWORD_OPTIONS } from './password.service';
         hashBytes: Number(process.env.PASSWORD_HASH_BYTES),
         saltBytes: Number(process.env.PASSWORD_SALT_BYTES),
         iterations: Number(process.env.PASSWORD_ITERATIONS),
-        digest: process.env.DIGEST,
+        digest: process.env.PASSWORD_DIGEST,
       },
     },
   ],
