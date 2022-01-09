@@ -1,4 +1,3 @@
-import { Booking, CreateBookingDTO } from '@irrigation/shared/model';
 import { throwExpression, throwIfNullish } from '@irrigation/shared/util';
 import {
   BadRequestException,
@@ -24,6 +23,8 @@ import {
 import { map, Observable, switchMap } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
+import { CreateBookingDTO } from '../model/api/booking/booking.dto';
+import { Booking } from '../model/api/booking/booking.model';
 import { PassportRequest } from '../model/Passport';
 import { BookingService } from './booking.service';
 

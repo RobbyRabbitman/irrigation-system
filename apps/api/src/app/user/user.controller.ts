@@ -1,4 +1,3 @@
-import { CreateUserDTO, UpdateUserDTO, User } from '@irrigation/shared/model';
 import { isNonNull } from '@irrigation/shared/util';
 import {
   Controller,
@@ -22,6 +21,8 @@ import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { IrrigationSystemController } from '../irrigation-system/irrigation-system.controller';
+import { CreateUserDTO, UpdateUserDTO } from '../model/api/user/user.dto';
+import { User } from '../model/api/user/user.model';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from './user.service';
 

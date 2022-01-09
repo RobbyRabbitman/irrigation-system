@@ -1,4 +1,3 @@
-import { CreateUserDTO, Login, User } from '@irrigation/shared/model';
 import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
 import {
   ApiBody,
@@ -7,6 +6,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { from, Observable, switchMap } from 'rxjs';
+import { Login } from '../model/api/auth.model';
+import { CreateUserDTO } from '../model/api/user/user.dto';
+import { User } from '../model/api/user/user.model';
 import { PassportRequest } from '../model/Passport';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';

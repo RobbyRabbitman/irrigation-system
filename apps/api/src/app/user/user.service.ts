@@ -1,15 +1,10 @@
-import {
-  User,
-  UserDocument,
-  UpdateUserDTO,
-  UserName,
-  CreateUserDTO,
-} from '@irrigation/shared/model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, Observable } from 'rxjs';
 import { removeNullish } from '@irrigation/shared/util';
+import { CreateUserDTO, UpdateUserDTO } from '../model/api/user/user.dto';
+import { UserName, UserDocument, User } from '../model/api/user/user.model';
 @Injectable()
 export class UserService {
   public constructor(

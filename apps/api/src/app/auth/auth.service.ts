@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { map, switchMap } from 'rxjs/operators';
-import { Jwt, User } from '@irrigation/shared/model';
 import { Observable, of } from 'rxjs';
 import { isNonNull } from '@irrigation/shared/util';
 import { PasswordService } from './password.service';
+import { Jwt } from '../model/api/auth.model';
+import { User } from '../model/api/user/user.model';
 
 @Injectable()
 export class AuthService {

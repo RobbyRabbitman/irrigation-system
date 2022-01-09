@@ -1,5 +1,5 @@
-import { OBJECT_ID } from '@irrigation/shared/model';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import { OBJECT_ID } from '../model/api/identifyable.model';
 
 @Injectable()
 export class ObjectIdPipe implements PipeTransform {

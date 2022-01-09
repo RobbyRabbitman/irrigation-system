@@ -3,8 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { throwIfEmpty } from 'rxjs/operators';
-import { User } from '@irrigation/shared/model';
 import { firstValueFrom } from 'rxjs';
+import { User } from '../model/api/user/user.model';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {

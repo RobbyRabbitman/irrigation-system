@@ -1,4 +1,3 @@
-import { IrrigationSystem } from '@irrigation/shared/model';
 import {
   Controller,
   Get,
@@ -14,6 +13,7 @@ import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
+import { IrrigationSystem } from '../model/api/irrigation-system/irrigation-system.model';
 import { PassportRequest } from '../model/Passport';
 import { PumpController } from '../pump/pump.controller';
 import { IrrigationSystemService } from './irrigation-system.service';

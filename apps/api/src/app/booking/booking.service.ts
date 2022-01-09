@@ -1,12 +1,9 @@
-import {
-  Booking,
-  BookingDocument,
-  CreateBookingDTO,
-} from '@irrigation/shared/model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { from as rxjsFrom, mapTo, Observable } from 'rxjs';
+import { CreateBookingDTO } from '../model/api/booking/booking.dto';
+import { Booking, BookingDocument } from '../model/api/booking/booking.model';
 
 @Injectable()
 export class BookingService {

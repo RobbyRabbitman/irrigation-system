@@ -1,4 +1,3 @@
-import { CreatePumpDTO, Pump, UpdatePumpDTO } from '@irrigation/shared/model';
 import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -10,6 +9,8 @@ import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthenticatedUserGuard } from '../guards/authenticated-user.guard';
+import { CreatePumpDTO, UpdatePumpDTO } from '../model/api/pump/pump.dto';
+import { Pump } from '../model/api/pump/pump.model';
 import { PumpService } from './pump.service';
 
 @UseGuards(JwtAuthGuard, AdminGuard, AuthenticatedUserGuard)

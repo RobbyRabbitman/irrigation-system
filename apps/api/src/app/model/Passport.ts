@@ -1,4 +1,5 @@
-import { User } from '@irrigation/shared/model';
+import { User } from './api/user/user.model';
+
 export interface PassportRequest {
   user: User;
 }

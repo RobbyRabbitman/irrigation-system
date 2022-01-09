@@ -1,9 +1,9 @@
-import { UserSchema, UserName } from '@irrigation/shared/model';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
+import { UserName, UserSchema } from '../model/api/user/user.model';
 
 @Module({
   imports: [

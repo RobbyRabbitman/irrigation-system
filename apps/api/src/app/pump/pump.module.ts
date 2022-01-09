@@ -1,6 +1,6 @@
-import { PumpName, PumpSchema } from '@irrigation/shared/model';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PumpName, PumpSchema } from '../model/api/pump/pump.model';
 import { PumpController } from './pump.controller';
 import { PumpService } from './pump.service';
 

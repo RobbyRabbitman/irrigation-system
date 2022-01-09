@@ -1,11 +1,11 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { User } from '@irrigation/shared/model';
 import { Payload } from './Payload';
 import { UserService } from '../user/user.service';
 import { firstValueFrom, map } from 'rxjs';
 import { isNonNull } from '@irrigation/shared/util';
+import { User } from '../model/api/user/user.model';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
