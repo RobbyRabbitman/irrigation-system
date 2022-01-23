@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { isNonNull } from '@irrigation/shared/util';
+import { isNonNull, throwExpression } from '@irrigation/shared/util';
 import { PasswordService } from './password.service';
 import { Jwt } from '../model/api/auth.model';
 import { User } from '../model/api/user/user.model';
@@ -22,9 +22,11 @@ export class AuthService {
   ): Observable<User | undefined> {
     return this.usersService.getOne(username).pipe(
       switchMap((user) =>
-        this.passwordService
-          .compare(password, user.password)
-          .then((match) => (match ? user : undefined))
+        isNonNull(user)
+          ? this.passwordService
+              .compare(password, user.password)
+              .then((match) => (match ? user : undefined))
+          : throwExpression(new ForbiddenException())
       ),
       map((user) => {
         if (isNonNull(user)) delete user.password;
