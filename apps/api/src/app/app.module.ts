@@ -9,6 +9,7 @@ import { BookingModule } from './booking/booking.module';
 import { AdminGuard } from './guards/admin.guard';
 import { AuthenticatedUserGuard } from './guards/authenticated-user.guard';
 import * as mongooseAutoPopulate from 'mongoose-autopopulate';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO, {
@@ -22,6 +23,7 @@ import * as mongooseAutoPopulate from 'mongoose-autopopulate';
     UserModule,
     IrrigationSystemModule,
     BookingModule,
+    HealthModule,
   ],
   providers: [AdminGuard, AuthenticatedUserGuard],
 })
