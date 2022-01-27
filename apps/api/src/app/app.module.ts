@@ -10,8 +10,14 @@ import { AdminGuard } from './guards/admin.guard';
 import { AuthenticatedUserGuard } from './guards/authenticated-user.guard';
 import * as mongooseAutoPopulate from 'mongoose-autopopulate';
 import { HealthModule } from './health/health.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'web'),
+      exclude: ['/api*'],
+    }),
     MongooseModule.forRoot(process.env.MONGO, {
       connectionFactory: (connection) => {
         connection.plugin(mongooseAutoPopulate);
