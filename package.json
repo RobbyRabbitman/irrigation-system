@@ -6,7 +6,7 @@
     "node": "14.16.1"
   },
   "scripts": {
-    "build": "nx build api",
+    "build": "nx run-many --target=build --projects=api,web",
     "postinstall": "ngcc --properties es2015 browser module main"
   },
   "private": true,
