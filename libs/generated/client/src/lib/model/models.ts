@@ -2,6 +2,7 @@ export * from './booking';
 export * from './createBookingDTO';
 export * from './createPumpDTO';
 export * from './createUserDTO';
+export * from './healthCheck';
 export * from './irrigationSystem';
 export * from './login';
 export * from './pump';

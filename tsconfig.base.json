@@ -17,7 +17,7 @@
     "paths": {
       "@irrigation/admin": ["libs/admin/src/index.ts"],
       "@irrigation/auth": ["libs/auth/src/index.ts"],
-      "@irrigation/generated/client": ["libs/generated/client/index.ts"],
+      "@irrigation/generated/client": ["libs/generated/client/src/index.ts"],
       "@irrigation/irrigation-system": ["libs/irrigation-system/src/index.ts"],
       "@irrigation/profile": ["libs/profile/src/index.ts"],
       "@irrigation/shared/error": ["libs/shared/error/src/index.ts"],

@@ -4,6 +4,7 @@
     "admin": "libs/admin",
     "api": "apps/api",
     "auth": "libs/auth",
+    "generated-client": "libs/generated/client",
     "irrigation-system": "libs/irrigation-system",
     "profile": "libs/profile",
     "shared-error": "libs/shared/error",

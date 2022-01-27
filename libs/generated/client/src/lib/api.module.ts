@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from './api/auth.service';
 import { BookingService } from './api/booking.service';
+import { HealthService } from './api/health.service';
 import { IrrigationSystemService } from './api/irrigationSystem.service';
 import { PumpService } from './api/pump.service';
 import { UserService } from './api/user.service';
@@ -16,6 +17,7 @@ import { UserService } from './api/user.service';
   providers: [
     AuthService,
     BookingService,
+    HealthService,
     IrrigationSystemService,
     PumpService,
     UserService ]
