@@ -2,11 +2,11 @@
   "name": "irrigation",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "14.16.1"
+  },
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "serve:all": "nx run-many --target=serve --all=true",
+    "build": "nx build api",
     "postinstall": "ngcc --properties es2015 browser module main"
   },
   "private": true,
