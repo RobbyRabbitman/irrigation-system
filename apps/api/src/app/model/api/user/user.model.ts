@@ -42,11 +42,6 @@ export class User extends Identifyable {
   @IsOptional()
   @Prop()
   admin?: boolean;
-  @ApiProperty({ required: false })
-  @IsString()
-  @IsOptional()
-  @Prop()
-  jwt?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

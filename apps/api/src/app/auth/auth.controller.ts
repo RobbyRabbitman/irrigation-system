@@ -6,7 +6,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { from, Observable, switchMap } from 'rxjs';
-import { Login } from '../model/api/auth.model';
+import { Jwt, Login } from '../model/api/auth.model';
 import { CreateUserDTO } from '../model/api/user/user.dto';
 import { User } from '../model/api/user/user.model';
 import { PassportRequest } from '../model/Passport';
@@ -24,18 +24,12 @@ export class AuthController {
     private readonly passwordService: PasswordService
   ) {}
 
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: Jwt })
   @ApiBody({ type: Login })
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  public login(@Request() req: PassportRequest): Observable<User> {
-    return this.authService
-      .login(req.user)
-      .pipe(
-        switchMap(({ access_token }) =>
-          this.userService.update(req.user.id, { jwt: access_token })
-        )
-      );
+  public login(@Request() req: PassportRequest): Observable<Jwt> {
+    return this.authService.login(req.user);
   }
 
   @ApiCreatedResponse({ type: User })

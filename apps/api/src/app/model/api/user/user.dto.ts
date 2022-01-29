@@ -30,9 +30,6 @@ export class UpdateUserDTO {
   @IsBoolean()
   admin?: boolean;
   @ApiProperty({ required: false })
-  @IsOptional()
-  jwt?: string;
-  @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
   authenticated?: boolean;
